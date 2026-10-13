@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="面向线上少儿数学思维班主任（LP）的《S1-S9 学段知识复习》互动微课：幼儿阶段 S1-S3 / 小学阶段 S4-S9">
+<title>S1-S9 学段知识复习 · 班主任微课</title>
+<style>
+
+:root{--primary:#4F46E5;--primary-light:#EEF2FF;--primary-dark:#3730A3;--accent:#D97706;--accent-light:#FEF3C7;--success:#059669;--danger:#DC2626;--bg:#F8FAFC;--card:#FFFFFF;--text:#1E293B;--text-secondary:#64748B;--border:#E2E8F0;--shadow:0 1px 3px rgba(0,0,0,0.08),0 1px 2px rgba(0,0,0,0.06);--shadow-lg:0 10px 25px rgba(0,0,0,0.08);--radius:12px;--radius-sm:8px;--sidebar-bg:#1e293b;--sidebar-text:#cbd5e1;--sidebar-active:#6366f1}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans HK',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;display:flex;min-height:100vh}
+.sidebar{width:280px;min-width:280px;background:var(--sidebar-bg);color:var(--sidebar-text);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;transition:transform 0.3s}
+.sidebar-close-btn{display:none;position:absolute;top:8px;right:12px;background:none;border:none;color:#94a3b8;font-size:20px;cursor:pointer;z-index:10;padding:8px;line-height:1}
+.sidebar-header{padding:24px 20px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.sidebar-header h3{font-size:14px;color:#94a3b8;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.sidebar-header .course-title{font-size:16px;font-weight:700;color:#fff;line-height:1.4}
+.sidebar-progress{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.1)}
+.progress-label{display:flex;justify-content:space-between;font-size:12px;color:#94a3b8;margin-bottom:8px}
+.progress-bar{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--sidebar-active);border-radius:3px;transition:width .5s ease;width:0%}
+.sidebar-nav{flex:1;overflow-y:auto;padding:12px 0}
+.nav-section{padding:8px 20px;cursor:pointer;display:flex;align-items:flex-start;gap:12px;transition:all .2s;border-left:3px solid transparent}
+.nav-section:hover{background:rgba(255,255,255,0.05)}
+.nav-section.active{background:rgba(99,102,241,0.15);border-left-color:var(--sidebar-active);color:#fff}
+.nav-section.completed{color:#94a3b8}
+.nav-section.completed .nav-icon{background:var(--success);color:#fff}
+.nav-section.locked{opacity:.45;cursor:not-allowed;pointer-events:none}
+.nav-section.locked .nav-icon{background:rgba(255,255,255,0.08);color:#64748b}
+.nav-icon{width:32px;height:32px;min-width:32px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:var(--sidebar-text);transition:all .3s}
+.nav-section.active .nav-icon{background:var(--sidebar-active);color:#fff}
+.nav-info .nav-label{font-size:13px;font-weight:600}
+.nav-info .nav-sub{font-size:11px;color:#64748b;margin-top:2px}
+.nav-section.active .nav-info .nav-sub{color:#94a3b8}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,0.1);font-size:12px;color:#64748b}
+.study-timer{padding:10px 20px;border-bottom:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;gap:10px;font-size:13px}
+.timer-icon{font-size:16px}
+.timer-display{color:#fff;font-weight:700;font-variant-numeric:tabular-nums}
+.timer-label{color:#94a3b8;font-size:11px}
+.main{margin-left:280px;flex:1;padding:40px;max-width:900px;min-width:0}
+.section{display:none;animation:fadeSlide .4s ease}
+.section.active{display:block}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.section-header{margin-bottom:32px}
+.section-badge{display:inline-block;padding:4px 14px;background:#dbeafe;color:var(--primary-dark);border-radius:20px;font-size:13px;font-weight:600;margin-bottom:12px}
+.section-header h1{font-size:28px;font-weight:800;color:var(--text);margin-bottom:8px}
+.section-header .duration{font-size:14px;color:var(--text-secondary)}
+.card{background:var(--card);border-radius:var(--radius);padding:28px;margin-bottom:20px;box-shadow:var(--shadow);border:1px solid var(--border)}
+.card-title{font-size:18px;font-weight:700;margin-bottom:16px;color:var(--text)}
+.highlight-box{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-left:4px solid var(--primary);padding:20px 24px;border-radius:var(--radius-sm);margin:20px 0}
+.highlight-box.warning{background:linear-gradient(135deg,#fef3c7,#fde68a);border-left-color:var(--accent)}
+.highlight-box.success{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-left-color:var(--success)}
+.script-block{background:#f1f5f9;padding:20px 24px;border-radius:var(--radius-sm);font-style:italic;color:#475569;position:relative;margin:16px 0;line-height:1.8}
+.script-block::before{content:'\01f399\00fe0f 话术范例';position:absolute;top:-10px;left:16px;background:#475569;color:#fff;padding:2px 10px;border-radius:10px;font-size:11px;font-style:normal}
+.flow-steps{display:flex;gap:16px;margin:20px 0;flex-wrap:wrap}
+.flow-step{flex:1;min-width:140px;background:var(--card);border:2px solid var(--border);border-radius:var(--radius-sm);padding:20px;text-align:center;box-shadow:var(--shadow)}
+.flow-step .step-num{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-bottom:12px}
+.flow-step h4{font-size:14px;font-weight:700;margin-bottom:8px}
+.flow-step p{font-size:13px;color:var(--text-secondary);line-height:1.6}
+.flow-arrow{display:flex;align-items:center;font-size:24px;color:var(--primary);font-weight:700}
+.strategy-grid{display:flex;gap:16px;margin:20px 0;flex-wrap:wrap}
+.strategy-card{flex:1;min-width:200px;background:var(--card);border:2px solid var(--border);border-radius:var(--radius-sm);padding:24px;text-align:center;box-shadow:var(--shadow)}
+.strategy-card .icon{font-size:36px;margin-bottom:12px}
+.strategy-card h4{font-size:16px;font-weight:700;margin-bottom:8px}
+.strategy-card p{font-size:13px;color:var(--text-secondary)}
+.step-list{counter-reset:step}
+.step-item{counter-increment:step;display:flex;gap:16px;align-items:flex-start;padding:18px 0;border-bottom:1px solid var(--border)}
+.step-item:last-child{border-bottom:none}
+.step-num-big{width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.step-content h4{font-size:16px;color:var(--text);margin-bottom:4px}
+.step-content p{font-size:14px;color:var(--text-secondary)}
+.chat-scene{max-width:650px;margin:0 auto}
+.chat-msg{display:flex;gap:12px;margin-bottom:12px;align-items:flex-start}
+.chat-msg.lp{flex-direction:row}
+.chat-msg.parent{flex-direction:row-reverse}
+.chat-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;font-weight:700}
+.chat-msg.lp .chat-avatar{background:#EEF2FF;color:var(--primary-dark)}
+.chat-msg.parent .chat-avatar{background:#FEF3C7;color:var(--accent)}
+.chat-bubble{max-width:75%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.6}
+.chat-msg.lp .chat-bubble{background:#F1F5F9;color:var(--text);border-bottom-left-radius:4px}
+.chat-msg.parent .chat-bubble{background:#EEF2FF;color:var(--text);border-bottom-right-radius:4px}
+.chat-label{font-size:11px;color:var(--text-secondary);margin-bottom:4px}
+.tab-wrap{display:flex;gap:4px;margin-bottom:16px;background:var(--border);border-radius:10px;padding:4px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:70px;padding:8px 12px;border:none;background:transparent;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;color:var(--text-secondary);transition:all .2s}
+.tab-btn.active{background:var(--card);color:var(--primary);font-weight:600;box-shadow:var(--shadow)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.highlight{background:linear-gradient(180deg,transparent 60%,#FEF08A 60%);padding:0 4px}
+.tips-box{background:var(--accent-light);border-left:4px solid var(--accent);padding:14px 18px;border-radius:0 8px 8px 0;margin:16px 0;font-size:14px}
+.tips-box strong{color:var(--accent)}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+.badge-primary{background:var(--primary-light);color:var(--primary)}
+.badge-warning{background:var(--accent-light);color:var(--accent)}
+.badge-success{background:#ECFDF5;color:var(--success)}
+.quiz-card{background:var(--card);border-radius:var(--radius);padding:28px;margin:12px 0;box-shadow:var(--shadow-lg);border:2px solid var(--border)}
+.quiz-card.locked .quiz-options{opacity:0.5;filter:grayscale(0.4);pointer-events:none}
+.quiz-card.locked .quiz-locked-hint{display:flex}
+.quiz-card:not(.locked) .quiz-locked-hint{display:none}
+.quiz-locked-hint{display:none;align-items:center;justify-content:center;padding:10px 14px;background:#f1f5f9;color:#475569;border-radius:6px;font-size:13px;margin-top:12px;border:1px dashed #cbd5e1}
+.quiz-question{font-size:16px;font-weight:600;margin-bottom:20px;line-height:1.7}
+.quiz-options{display:flex;flex-direction:column;gap:10px}
+.quiz-option{display:flex;align-items:center;gap:12px;padding:16px;border:2px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;min-height:48px}
+.quiz-option:hover{border-color:var(--primary-light);background:#f0f7ff}
+.quiz-option.correct{border-color:var(--success)!important;background:#ecfdf5!important}
+.quiz-option.wrong{border-color:var(--danger)!important;background:#fef2f2!important}
+.quiz-option.disabled{opacity:.5;cursor:default;border-color:#e2e8f0;background:#f8fafc}
+.quiz-option.correct .quiz-option-label{background:var(--success);color:#fff}
+.quiz-option.wrong .quiz-option-label{background:var(--danger);color:#fff}
+.quiz-option-label{width:28px;height:28px;border-radius:50%;background:var(--primary-light);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.quiz-feedback{display:none;margin-top:16px;padding:16px;border-radius:var(--radius-sm);font-size:14px;line-height:1.7}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:#ecfdf5;color:#065f46}
+.quiz-feedback.wrong{background:#fef2f2;color:#991b1b}
+.final-task-container{background:var(--card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-lg);border:2px solid var(--border)}
+.final-task-input{width:100%;min-height:180px;padding:16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;line-height:1.8;resize:vertical;font-family:inherit}
+.final-task-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,0.1)}
+.final-task-input:disabled{background:#f1f5f9;cursor:not-allowed}
+.char-counter{text-align:right;font-size:12px;color:var(--text-secondary);margin-top:6px}
+.ai-feedback-panel{display:none;margin-top:24px}
+.ai-feedback-panel.show{display:block}
+.score-display{text-align:center;margin:16px 0}
+.score-circle{width:80px;height:80px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:32px;font-weight:800;color:#fff}
+.score-circle.high{background:linear-gradient(135deg,#10b981,#059669)}
+.score-circle.medium{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.score-circle.low{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.eval-dimensions{display:flex;gap:16px;flex-wrap:wrap}
+.eval-dim{flex:1;min-width:150px;background:#f8fafc;border-radius:var(--radius-sm);padding:20px;text-align:center}
+.keywords-result{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;justify-content:center}
+.keyword-tag{display:inline-block;padding:2px 10px;border-radius:20px;font-size:12px;font-weight:500}
+.keyword-tag.found{background:#ecfdf5;color:#065f46}
+.keyword-tag.missing{background:#fef2f2;color:#991b1b}
+.dialogue-container{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow-lg);border:2px solid var(--border);overflow:hidden}
+.dialogue-header{padding:16px 20px;background:var(--primary-light);border-bottom:1px solid var(--border);font-weight:700;color:var(--primary-dark);display:flex;justify-content:space-between;align-items:center}
+.dialogue-messages{max-height:400px;overflow-y:auto;padding:16px 20px;min-height:150px}
+.dialogue-input-area{display:flex;padding:12px 20px;border-top:1px solid var(--border);gap:8px}
+.dialogue-input-area input{flex:1;padding:12px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;font-family:inherit}
+.dialogue-input-area input:focus{outline:none;border-color:var(--primary)}
+.btn{padding:12px 24px;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s;background:var(--primary);color:#fff}
+.btn:hover{background:var(--primary-dark);transform:translateY(-1px)}
+.btn-outline{background:var(--card);color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:var(--primary-light)}
+.btn-success{background:var(--success);color:#fff}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.section-nav-buttons{display:flex;justify-content:space-between;margin-top:32px;padding-top:24px;border-top:1px solid var(--border)}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:8px;color:#fff;font-size:14px;font-weight:600;z-index:9999;animation:slideDown .3s ease}
+.toast.warning{background:#d97706}
+.toast.success{background:#059669}
+.toast.error{background:#dc2626}
+@keyframes slideDown{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.notes-toggle{position:fixed;bottom:24px;right:24px;width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:24px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:90}
+.notes-panel{position:fixed;bottom:0;right:0;width:340px;background:var(--card);border-left:1px solid var(--border);border-top:1px solid var(--border);box-shadow:-4px -4px 20px rgba(0,0,0,0.1);padding:20px;transform:translateX(100%);transition:transform .3s;z-index:200}
+.notes-panel.open{transform:translateX(0)}
+.notes-panel textarea{width:100%;height:200px;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:13px;font-family:inherit;resize:vertical}
+.cert-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:999;justify-content:center;align-items:center}
+.cert-paper{background:#fff;width:700px;padding:48px 36px;text-align:center;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.cert-paper h1{font-size:28px;color:#3730A3;margin-bottom:4px}
+.cert-paper .sub{font-size:12px;color:#64748b;letter-spacing:.1em;margin-bottom:24px}
+.cert-paper .body{font-size:15px;line-height:2;color:#1e293b}
+.cert-paper .name{display:inline-block;border-bottom:2px solid #4F46E5;min-width:120px;padding:4px 12px;margin:0 4px}
+.cert-paper .course{font-weight:700;color:#3730A3;margin:8px 0}
+.cert-paper .score{margin:20px 0 4px;font-size:16px;font-weight:600;color:#10b981}
+.cert-paper .final-score{margin:4px 0 20px;font-size:14px;font-weight:600;color:#3730A3}
+.cert-footer{display:flex;justify-content:space-between;font-size:12px;color:#64748b;margin-top:32px;border-top:1px solid #e2e8f0;padding-top:16px}
+.cert-actions{margin-top:24px;display:flex;gap:12px;justify-content:center}
+.ch3-textarea{width:100%;min-height:220px;padding:16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;line-height:1.8;resize:vertical;font-family:inherit}
+.ch3-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,0.1)}
+.practice-textarea{width:100%;min-height:280px;padding:16px;border:2px solid var(--border);border-radius:var(--radius-sm);font-size:14px;line-height:1.8;resize:vertical;font-family:inherit;box-sizing:border-box}
+.practice-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(79,70,229,0.1)}
+.ch3-ref-panel{display:none;margin-top:16px}
+.ch3-ref-panel.show{display:block}
+.course-img{max-width:100%;border-radius:var(--radius-sm);box-shadow:var(--shadow);margin:16px 0;border:1px solid var(--border)}
+.mobile-header{display:none;position:fixed;top:0;left:0;right:0;background:var(--sidebar-bg);color:#fff;padding:12px 16px;z-index:99;align-items:center;justify-content:space-between}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:99}
+.typing-indicator{display:flex;gap:4px;padding:10px 14px;background:#EEF2FF;border-radius:14px;border-bottom-right-radius:4px;width:fit-content}
+.typing-indicator span{width:8px;height:8px;background:#94a3b8;border-radius:50%;animation:typing 1.4s infinite ease-in-out}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes typing{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.dialogue-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.final-actions{flex-wrap:wrap}
+.final-call-btn{padding:14px 28px;font-size:16px;display:inline-flex;align-items:center;gap:8px}
+.final-score-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.final-score-card{background:#f8fafc;border-radius:var(--radius-sm);padding:16px;text-align:center}
+.final-score-card .score{font-size:24px;font-weight:800;color:var(--primary)}
+.final-score-card .label{font-size:12px;color:var(--text-secondary);margin-top:4px}
+.final-feedback-text{background:#f8fafc;border-radius:var(--radius-sm);padding:16px;font-size:14px;line-height:1.7;margin-top:16px}
+.sidebar-overlay.show{display:block}
+/* 移动端优化：表格横向滚动、评分卡2列、价格表最小宽度 */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:8px 0;border-radius:6px}
+.table-wrap table{min-width:680px}
+.final-score-grid{grid-template-columns:repeat(4,1fr)}
+@media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-close-btn{display:block}.main{margin-left:0;padding:24px 16px;padding-top:60px}.mobile-header{display:flex}.eval-dimensions{flex-direction:column}.cert-paper{width:95%;padding:24px 16px}.flow-steps{flex-direction:column}.flow-arrow{transform:rotate(90deg);justify-content:center}.final-score-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.quiz-option{padding:12px}.quiz-question{font-size:15px}.dialogue-header{flex-direction:column;align-items:flex-start;gap:8px}.section-header h1{font-size:24px}.final-call-btn{width:100%;justify-content:center}.final-actions{flex-direction:column}.final-actions .btn{width:100%;justify-content:center}.cert-paper{padding:24px 12px}.cert-paper h1{font-size:22px}}
+
+/* ============================================================
+   《S1-S9 学段知识复习》微课 · 补充样式（叠加在 _shell.css 之上）
+   主题：国内 LP · 简体中文 · 大陆用语
+   ============================================================ */
+
+/* ---------------- 篇分组（侧边栏） ---------------- */
+.nav-part{padding:12px 20px 6px;font-size:11.5px;font-weight:800;color:#94a3b8;letter-spacing:.04em;border-top:1px solid rgba(255,255,255,.08);margin-top:6px}
+.nav-part:first-child{border-top:none;margin-top:0}
+.nav-part .np-line{display:block;margin-top:2px;font-weight:400;font-size:10.5px;color:#64748b}
+
+/* ---------------- 知识点条目（概念→要点→易错点） ---------------- */
+.kp-item{border:1px solid var(--border);border-left:4px solid var(--primary);border-radius:10px;padding:16px 18px;margin:12px 0;background:#FDFDFF}
+.kp-item .kp-head{font-size:15px;font-weight:800;color:var(--primary-dark);margin-bottom:8px;line-height:1.6}
+.kp-item .kp-body p{font-size:13.5px;line-height:1.9;color:#334155;margin:6px 0}
+.kp-item .kp-body p b{color:var(--primary-dark)}
+.kp-item .kp-body p:nth-of-type(3){background:#FFF7ED;border-left:3px solid var(--accent);padding:8px 12px;border-radius:0 8px 8px 0}
+.kp-item .kp-body p:nth-of-type(3) b{color:#B45309}
+
+/* ---------------- 家长场景卡 ---------------- */
+.scene-card{border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin:14px 0;background:var(--card);box-shadow:var(--shadow)}
+.scene-card .sc-q{background:#FEF3C7;border-radius:8px;padding:10px 14px;font-weight:700;color:#92400E;font-size:14px;line-height:1.8;margin-bottom:12px}
+.scene-card p{font-size:13.5px;line-height:1.9;color:#334155;margin:8px 0}
+.scene-card p b{color:var(--primary-dark)}
+
+/* ---------------- 教育心理学框 ---------------- */
+.psy-box{background:linear-gradient(135deg,#F5F3FF,#EEF2FF);border-left:4px solid #7C3AED;border-radius:0 10px 10px 0;padding:14px 18px;margin:16px 0 4px;font-size:13.5px;line-height:1.9;color:#3B3663}
+.psy-box .psy-t{display:block;font-weight:800;color:#6D28D9;font-size:13px;margin-bottom:6px}
+.psy-box b{color:#6D28D9}
+
+/* ---------------- 练习：难度标签 / 提交区 / 成绩横幅 ---------------- */
+.diff-tag{display:inline-block;font-size:11px;font-weight:800;border-radius:999px;padding:2px 10px;margin-right:8px;vertical-align:middle}
+.diff-tag.lv-easy{background:#ECFDF5;color:#059669}
+.diff-tag.lv-mid{background:#FFFBEB;color:#D97706}
+.diff-tag.lv-hard{background:#FEF2F2;color:#DC2626}
+.quiz-submit-area{margin-top:20px;text-align:center;display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.quiz-score-banner{display:none;margin-top:18px;padding:16px 20px;border-radius:10px;font-size:15px;font-weight:700;text-align:center;line-height:1.8}
+.quiz-score-banner.show{display:block}
+.quiz-score-banner.good{background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0}
+.quiz-score-banner.mid{background:#FFFBEB;color:#92400E;border:1px solid #FDE68A}
+.quiz-score-banner.bad{background:#FEF2F2;color:#991B1B;border:1px solid #FECACA}
+.quiz-explain{display:none;margin-top:12px;padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.9;background:#F8FAFC;color:#334155;border:1px solid var(--border)}
+.quiz-explain.show{display:block}
+.quiz-explain .qe-h{font-weight:800;color:var(--primary-dark);margin-bottom:4px}
+.quiz-card.answered{border-color:#C7D2FE}
+.quiz-note{margin:0 0 14px 0;font-size:13px;color:var(--text-secondary);background:#EEF2FF;border-left:3px solid var(--primary);padding:8px 12px;border-radius:4px;line-height:1.8}
+
+/* ---------------- 自测清单 ---------------- */
+.check-list{display:flex;flex-direction:column;gap:2px}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:11px 12px;border-radius:8px;cursor:pointer;font-size:14px;line-height:1.8;color:#334155;transition:background .15s}
+.check-item:hover{background:#F8FAFC}
+.check-item input[type="checkbox"]{width:18px;height:18px;margin-top:4px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
+.check-item.checked{color:#94A3B8;text-decoration:line-through}
+
+/* ---------------- 表格（覆盖） ---------------- */
+.table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+table th,table td{border:1px solid var(--border);padding:10px 12px;text-align:left;vertical-align:top;line-height:1.7}
+table th{background:#EEF2FF;font-weight:700;color:var(--primary-dark);white-space:nowrap}
+table tbody tr:nth-child(even) td{background:#F8FAFC}
+
+/* 章节计划时间条：计划时长 vs 实际停留用时（所有微课统一） */
+.chapter-plan-bar{margin:0 0 20px;padding:12px 16px;border-radius:8px;
+  background:#EEF2FF;border-left:4px solid var(--primary)}
+.chapter-plan-bar .cp-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;font-size:13px;color:var(--text-secondary)}
+.chapter-plan-bar .cp-label{font-weight:700;color:var(--primary-dark,var(--primary))}
+.chapter-plan-bar .cp-spent{font-weight:600;color:var(--text)}
+.chapter-plan-bar .cp-spent.over{color:#B45309}
+.chapter-plan-bar .cp-rest{margin-left:auto;font-size:12px}
+.chapter-plan-bar .cp-track{height:6px;background:#DBEAFE;border-radius:3px;overflow:hidden;margin-top:8px}
+.chapter-plan-bar .cp-fill{height:100%;background:var(--primary);border-radius:3px;transition:width .4s ease}
+.chapter-plan-bar .cp-fill.over{background:#F59E0B}
+.chapter-plan-bar.over{background:#FFF7ED;border-left-color:#F59E0B}
+
+/* 篇首分隔提示 */
+.part-divider{margin:0 0 20px;padding:14px 18px;border-radius:10px;background:linear-gradient(135deg,#EEF2FF,#F5F3FF);border:1px dashed #C7D2FE;font-size:13.5px;line-height:1.8;color:var(--primary-dark)}
+
+/* ================= 移动端 ================= */
+@media (max-width:1024px){
+  .kp-item{padding:14px}
+  .scene-card{padding:14px}
+  table{font-size:12px}
+  table th,table td{padding:8px}
+  table th{white-space:normal}
+  .table-wrap table{min-width:520px}
+  .main{padding-bottom:100px}
+  .section-nav-buttons{flex-direction:column;gap:10px;position:sticky;bottom:0;z-index:20;
+    background:var(--bg);padding:12px 0;border-top:1px solid var(--border);margin-top:24px}
+  .section-nav-buttons>div{width:100%}
+  .section-nav-buttons .btn{width:100%;text-align:center;padding:14px 24px;font-size:15px}
+  .chapter-plan-bar .cp-rest{margin-left:0}
+  .check-item{font-size:13px}
+}
+
+</style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar" id="sidebar">
+<button class="sidebar-close-btn" onclick="toggleSidebar()">✕</button>
+<div class="sidebar-header"><h3>LP 培训微课</h3><div class="course-title">S1-S9 学段知识复习</div></div>
+<div class="study-timer"><span class="timer-icon">⏱</span><div><div class="timer-display" id="timerDisplay">00:00</div><div class="timer-label">学习时长</div></div></div>
+<div class="sidebar-progress"><div class="progress-label"><span>学习进度</span><span id="progressPercent">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
+<div class="sidebar-nav" id="sidebarNav"></div>
+<div class="sidebar-footer">豌豆思维 · 国内 LP 培训</div>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<div class="mobile-header" id="mobileHeader"><button style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer" onclick="toggleSidebar()">☰</button><span style="font-weight:700;font-size:15px" id="mhTitle">S1-S9 学段知识复习</span><span style="font-size:13px;color:#94a3b8" id="mhTimer">⏱ 00:00</span></div>
+<div class="main" id="mainContent"></div>
+
+<button class="notes-toggle" onclick="toggleNotes()">📝</button>
+<div class="notes-panel" id="notesPanel">
+<h3>📝 学习笔记 — <span id="notesChapterLabel" style="font-weight:400;font-size:13px;color:var(--text-secondary)"></span></h3>
+<textarea id="notesTextarea" placeholder="在这里记录你的学习心得..."></textarea>
+<button class="btn btn-outline" onclick="toggleNotes()" style="margin-top:12px;width:100%">关闭</button>
+</div>
+
+<!-- ===== 课程数据（JSON） ===== -->
+<script id="appDataJson" type="application/json">{"title":"S1-S9 学段知识复习","lsPrefix":"cn-lp-stage-review","orgName":"豌豆思维 · 国内 LP 培训","parts":[{"name":"第一篇 幼儿阶段 S1-S3","start":0,"end":4},{"name":"第二篇 小学阶段 S4-S9","start":5,"end":8}],"sections":[{"title":"开篇导言","badge":"课程导引","icon":"📖","duration":"5 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">课程导引</span>\n<h1>📖 开篇导言</h1>\n<div class=\"duration\">⏱ 计划学习 5 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>本微课是什么：</strong>把《数学思维课程白皮书》S1-S9 九册内容按学段拆成两篇——\n<strong>幼儿阶段（S1-S3，小班到大班）</strong>和<strong>小学阶段（S4-S9，一年级到六年级）</strong>。\n每篇独立成章、互不交叉，统一按「重点知识讲解 → 家长关注点与沟通 → 篇末练习（附答案解析）→ 自测清单」的结构展开。\n适合在职班主任碎片时间自学、接待家长前快速回顾。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🗺 两篇结构一览</h3>\n<div class=\"choice-demo\">\n<div class=\"cd-item\">\n<span class=\"cd-tag\">第一篇 · 幼儿阶段</span>\n<div class=\"cd-h\">S1-S3（3-6 岁）</div>\n<div class=\"cd-b\">S1 小班：数感萌芽·图形初识<br>S2 中班：数量关系·方法意识<br>S3 大班：加减算理·幼小衔接</div>\n</div>\n<div class=\"cd-item\">\n<span class=\"cd-tag\">第二篇 · 小学阶段</span>\n<div class=\"cd-h\">S4-S9（6-12 岁）</div>\n<div class=\"cd-b\">低年级 S4-S5：计算算理·乘除跨越<br>中年级 S6-S7：分数概念·抽象建模<br>高年级 S8-S9：代数思维·综合冲刺</div>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">✅ 建议这样学</h3>\n<div class=\"flow-steps\">\n<div class=\"flow-step\"><div class=\"step-num\">1</div><h4>通读知识讲解</h4><p>每个知识点按「概念 → 要点 → 易错点」三段记，术语都先用大白话解释过。</p></div>\n<div class=\"flow-step\"><div class=\"step-num\">2</div><h4>看家长沟通场景</h4><p>高频问题配了沟通思路、常见误区和话术，可以直接借用。</p></div>\n<div class=\"flow-step\"><div class=\"step-num\">3</div><h4>做篇末练习</h4><p>每篇 15 题、由易到难。先选答案再提交，提交后逐题看答案和解析。</p></div>\n<div class=\"flow-step\"><div class=\"step-num\">4</div><h4>过自测清单</h4><p>对照篇末清单逐条打勾，没把握的回看对应知识点。</p></div>\n</div>\n<div class=\"tips-box\"><strong>说明：</strong>篇末练习<strong>不设通过线</strong>，提交后即可看到每题的参考答案与简要解析，只显示实际答对题数，可以反复重做。这里定位是复习资料，不是考核。</div>\n</div>\n"},{"title":"幼儿篇 · S1 小班（3-4 岁）","badge":"第一篇 · 幼儿阶段","icon":"🧸","duration":"12 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第一篇 · 幼儿阶段</span>\n<h1>🧸 S1 小班（3-4 岁）：数感萌芽·图形初识</h1>\n<div class=\"duration\">⏱ 计划学习 12 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>3-4 岁是<strong>数概念和空间知觉的敏感期</strong>。这个阶段重点不是\"学会多少知识\"，\n而是在游戏体验中建立对数和形的初步感知，养成\"愿意学、坐得住、听得进\"的基础习惯。\n核心任务：把<strong>\"数学是好玩的\"</strong>这颗种子种进心里。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 手口一致点数——数感的基石</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>点一个、数一个，手指点到哪、口数到哪，让\"嘴里数的数\"和\"眼睛看到的物\"一一对上。这就是<b>一一对应</b>——数数不是背歌谣，是数和物配对。</p>\n<p><b>要点：</b>路径是\"实物点数 → 看物说数 → 按数取物\"，先统计 5 以内，再扩到 10 以内；配儿歌和画面识记 1-10 数字。</p>\n<p><b>易错：</b>① 跳数漏数——嘴比手快，说明一一对应没建立；② 指 3 个苹果说 5 个——同一个问题；③ 换个摆法就数错——见下条\"守恒\"。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 数量守恒——\"换了摆法，数量不变\"</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>同样多的东西，摆成一长排还是堆成一堆，数量都一样。<b>守恒</b>就是\"变了样子、数量不变\"。</p>\n<p><b>要点：</b>用\"再数一遍\"验证，帮孩子排除颜色、大小、排列方式的干扰，在多种情景里反复感知。</p>\n<p><b>易错：</b>被\"看起来多\"骗——长长一排感觉比堆一堆多，这是幼儿认知发展的正常现象，多操作自然过。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 图形认知——从\"认名字\"到\"抓特征\"</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>认识圆、半圆、三角形、正方形、长方形五种基本图形，理解\"图形有边有角、可以拆开再组合、换个方向还是它\"。</p>\n<p><b>要点：</b>多角度、多形态辨认；通过拼摆、切割、仿拼把\"眼睛记住的\"变成\"手能验证的\"；能说图形名并找生活实例。</p>\n<p><b>易错：</b>正方形斜放就不认识、三角梯形混淆——说明只记了\"标准姿势\"，没有抓特征抽象识别。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 有序观察——\"先看哪里，再看哪里\"</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>按固定顺序（从上到下、从外到内、从左到右）看图，不漏不跳。</p>\n<p><b>要点：</b>局部特征、轮廓识别、指令理解；找相同找不同 1-3 处；从一个视角推断另一个视角。</p>\n<p><b>易错：</b>跳行跳格、只看整体轮廓扫一眼就下结论。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 量的比较与排序</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>比大小、长短、高矮；<b>并放法</b>就是把两个东西并排放在同一起点比。</p>\n<p><b>要点：</b>给 3-4 个物品按大小排序；感知\"数字有含义、东西可以比\"。</p>\n<p><b>易错：</b>比高矮没站同一条线——比较要有统一基准，这是小学\"单位统一\"思想的萌芽。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">6. 方位认知</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>上下、里外、前后，理解\"最上面\"\"最下面\"；<b>位置是相对的</b>——我在你前面，你也可能在我后面，看跟谁比。</p>\n<p><b>要点：</b>在稍复杂指令中用方位词判断推理，完成\"找位置\"挑战游戏。</p>\n<p><b>易错：</b>以自己为参照和以物体为参照混淆。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">7. 正数倒数、迷宫与移多补少（初步）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>1-10 正着数、倒着数；迷宫里从起点规划到终点；<b>移多补少</b>就是总数不变，从多的那边挪一些到少的那边，让两边一样多。</p>\n<p><b>要点：</b>补全简单数列缺失位置；一一对应比多少，理解\"多几个、少几个\"。</p>\n<p><b>易错：</b>移多补少把\"相差的全部\"挪过去——其实挪\"差的一半\"就够，这个阶段先建立\"变成一样多\"的感觉。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>5/10 以内点数统计</td><td>跳数、口手不齐</td><td>慢速实物点数，点一个数一个</td></tr>\n<tr><td>图形辨认与拼摆</td><td>斜放不认识、形状混淆</td><td>多形态辨认 + 动手拼摆验证</td></tr>\n<tr><td>找相同找不同</td><td>漏看、跳格</td><td>先定观察顺序再找差异</td></tr>\n<tr><td>大小长短排序</td><td>无基准乱比</td><td>并放法、统一起点</td></tr>\n<tr><td>上下里外前后</td><td>参照物混淆</td><td>生活情境反复说方位词</td></tr>\n<tr><td>数量守恒判断</td><td>被摆法干扰</td><td>自己数一遍验证</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「孩子才三岁，学数学是不是太早了？」</div>\n<p><b>沟通思路：</b>3-4 岁正是数概念与空间知觉的敏感期，此时学数学学的不是\"知识点\"，而是在游戏里建立对数和形的感知，顺便把专注、听指令这些底层习惯搭起来。</p>\n<p><b>常见误区：</b>拿小学的标准衡量小班——要求会写会算。启蒙阶段\"动手玩\"就是学。</p>\n<div class=\"script-block\">三岁学的不是算题，是\"数是有含义的、东西可以比大小\"这种感觉。您看孩子现在摆积木、分水果，其实都是在给以后的加减打地基。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「数到十就乱，指 3 个苹果说 5 个，是不是笨？」</div>\n<p><b>沟通思路：</b>这是<b>一一对应</b>还没建立，是能力发展问题不是智力问题。需要\"手口一致点数\"的具象经验堆积。</p>\n<p><b>常见误区：</b>逼孩子反复背 1-100——背得再熟，数和物没对上，问题还在。</p>\n<div class=\"script-block\">在家玩\"分水果\"：让宝贝拿 5 个橘子放到盘子里，一边拿一边数。手上有动作，数和东西才对得上，比背数有用得多。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「做点什么三分钟就跑，专注力是不是有问题？」</div>\n<p><b>沟通思路：</b>小班的专注是<b>任务理解和执行功能</b>在发展中，靠一次次\"听清楚 → 做明白 → 完成了\"的成功体验自然生长，不是按住不动练出来的。</p>\n<p><b>常见误区：</b>靠吼或强制久坐——专注没练成，先伤了学习情绪。</p>\n<div class=\"script-block\">这个年龄专注 5-10 分钟就很好了。我们从短时游戏开始，任务一步步加长，孩子每完成一次就有一次成就感，专注时长自然拉起来。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n皮亚杰认为 3-4 岁孩子处于<b>前运算阶段</b>，靠动作和具体事物思考，还不擅长抽象符号——所以\"具象操作\"永远排在\"口头讲授\"前面；\n<b>游戏是幼儿最自然的学习方式</b>；对每一次\"完成了\"及时给予<b>正向强化</b>，比批评\"没坐住\"有效得多。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>三岁不是比谁认的数字多，而是比谁先爱上\"认真完成一件事\"的感觉。</div>\n"},{"title":"幼儿篇 · S2 中班（4-5 岁）","badge":"第一篇 · 幼儿阶段","icon":"🎨","duration":"12 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第一篇 · 幼儿阶段</span>\n<h1>🎨 S2 中班（4-5 岁）：从\"凭感觉\"到\"有方法\"</h1>\n<div class=\"duration\">⏱ 计划学习 12 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>中班是从\"无意识吸收\"走向\"有意识学习\"的过渡期——孩子开始问\"为什么\"。\nS2 不提前教小学内容，而是建立<strong>\"我能自己想\"的信心</strong>和<strong>\"一步一步来\"的方法感</strong>。\n四条能力主线：计算更明（总数与部分）、空间更清（拼搭推理）、方法更懂（先想后做）、逻辑更强（因果排除）。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 总数 = 部分 + 部分——加减的根</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>一堆东西分成两堆，总数不变；反过来，两部分合起来就是总数。这是加减法的本义。</p>\n<p><b>要点：</b>通过\"分、合、补、移\"大量实物操作，让孩子自己发现\"多一个就加、少一个就减\"；认识 11-20，理解\"<b>十几 = 十和几</b>\"的分合结构。</p>\n<p><b>易错：</b>会背 1+2=3，换个情境问\"再给几个变成 5 个\"就答不出——背了答案、没建关系。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 图形进阶与拼切</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>认识三角形、四边形、梯形和更多多边形；图形可以\"切\"开也可以\"拼\"上。</p>\n<p><b>要点：</b>轮廓拼搭→铺路拼装→七巧板仿拼；动手前先分析——有几块？什么形状？怎么摆？从\"试出来的\"升级为\"想出来的\"。</p>\n<p><b>易错：</b>换种摆法就不认识；只会照着拼，不会想好了再拼。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 测量与比较</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>自然测量</b>——用积木、拃、绳子当\"尺子\"量长度；轻重比较；<b>等量替换</b>就是\"一个大的换几个小的，总量不变\"。</p>\n<p><b>要点：</b>感知长短轻重，理解公平分配（等量关系雏形）。</p>\n<p><b>易错：</b>测量单位不统一——大积木小积木混着量，结果就乱了。这一点要提前跟孩子点破。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 分类、统计与对应</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>按一个特征→多个特征分类；<b>统计</b>就是把东西按类数一数、记一记；对应包括光影对应和行列定位（坐标的雏形）。</p>\n<p><b>要点：</b>从一维到多维分类，尝试纠错和重新归类。</p>\n<p><b>易错：</b>分类标准换来换去——第一次按颜色、第二次按大小，自己绕晕。先定标准再分。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 逻辑推理与序数</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>因果推理（因为……所以……）、轨迹推理；<b>相邻数</b>——一个数前面是谁、后面是谁；<b>基数</b>（有几个）和<b>序数</b>（第几个）。</p>\n<p><b>要点：</b>行列坐标精确定位；重叠对应判断\"谁在上面、谁在下面\"。</p>\n<p><b>易错：</b>基数序数混——\"第 3 个\"听成\"一共 3 个\"。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">6. 方法意识——先想后做</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>动手前先说\"我打算怎么做\"。<b>元认知</b>的萌芽——对自己的思考过程有觉察。</p>\n<p><b>要点：</b>反复训练\"先说想法再动手\"；遇到难题愿意换一个方法再试。</p>\n<p><b>易错：</b>会的题做得挺好，不会的就发呆等答案——只有\"会/不会\"两种状态，缺\"试一试\"这条中间路。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>10 以内分合与加减</td><td>背了答案换情境不会</td><td>回到实物分合操作</td></tr>\n<tr><td>七巧板拼摆</td><td>会拼说不出思路</td><td>拼前先说：几块、什么形、怎么摆</td></tr>\n<tr><td>20 以内数结构</td><td>十几 = 十和几 不理解</td><td>捆小棒：10 根一捆再添几根</td></tr>\n<tr><td>分类与统计</td><td>标准不统一</td><td>先定标准，再纠错重分</td></tr>\n<tr><td>行列定位 / 重叠对应</td><td>上下层次分不清</td><td>从\"盖住谁\"玩起</td></tr>\n<tr><td>相邻数 / 序数</td><td>第几个 vs 有几个</td><td>排队情景对照练</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「加减法教了好多遍还不会！」</div>\n<p><b>沟通思路：</b>孩子缺的不是\"教\"，是<b>数量关系直觉</b>。需要在大量动手操作里感知\"总数 = 部分 + 部分\"，自己发现规律才是真懂。</p>\n<p><b>常见误区：</b>每天刷口算题——记住了答案，没建立关系，情境一换就露馅。</p>\n<div class=\"script-block\">先别急着教算式，咱们玩\"分糖\"：8 颗糖分成两堆有几种分法？孩子分着分着自己就发现\"多一个就加、少一个就减\"，这个发现比背一百道口算都值钱。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「搭积木挺厉害，看图做题就不行。」</div>\n<p><b>沟通思路：</b>动手强说明空间感觉好，卡点是从\"动手试\"到\"先想再试\"的推理层没打开。每次拼之前先带他说思路。</p>\n<p><b>常见误区：</b>只夸\"拼得对\"，不追问\"怎么想到的\"——空间表达一直没被激活。</p>\n<div class=\"script-block\">下次拼图前先问一句：这里需要几块？都是什么形状？放在哪儿？说完了再动手。慢慢他就从\"碰对了\"变成\"想对了\"。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「会的题挺好，不会的就发呆，从不主动试。」</div>\n<p><b>沟通思路：</b>这是<b>元认知</b>——对自己思考过程的觉察——还没形成。要给\"试\"搭台阶：先说想法，不行就换办法，把\"再试一次\"变成习惯。</p>\n<p><b>常见误区：</b>看孩子发呆直接给答案——\"试\"的机会被剥夺了。</p>\n<div class=\"script-block\">他一卡住，咱先别给答案，问一句：\"你打算怎么办？换个办法试试？\"哪怕试错了也是收获。四岁这个阶段，敢试比会做重要。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n维果茨基的<b>最近发展区</b>理论：给孩子的支持要\"跳一跳够得着\"——拼图前帮他把大问题拆成三个小问题，就是在搭脚手架；\n中班是<b>元认知萌芽期</b>，\"说出思路\"本身就是最好的训练；语言上多用\"我试试\"替代\"我不会\"，是<b>成长型思维</b>的日常练习。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>四岁不是比谁会算得多，而是比谁先说\"我试试\"，而不是\"我不会\"。</div>\n"},{"title":"幼儿篇 · S3 大班（5-6 岁）","badge":"第一篇 · 幼儿阶段","icon":"🚀","duration":"12 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第一篇 · 幼儿阶段</span>\n<h1>🚀 S3 大班（5-6 岁）：加减算理·幼小衔接</h1>\n<div class=\"duration\">⏱ 计划学习 12 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>大班是幼小衔接冲刺期。决定能否顺利适应小学的，不是提前学了多少一年级知识，\n而是底层思维能力：<strong>听懂课堂指令、多步完成任务、遇到不会愿意换方法、能把想法说清楚</strong>。\n核心任务：把\"会思考、能表达、坐得住\"三样底层能力准备到最佳状态。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 加减算理——从\"动手分\"到\"心里算\"</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>加法是\"合起来、增加了、一共\"；减法是\"分出去、拿走了、比多少\"。理解算理比记住答案重要得多。</p>\n<p><b>要点：</b>完整走\"具象 → 形象 → 抽象\"三步：实物操作（分一分、合起来）→ 图示（画圈圈、连箭头）→ 心算。覆盖 10-20 不进位加法、不退位减法。</p>\n<p><b>易错：</b>靠记忆会做简单加减，一变情境就不会——<b>\"记步骤\"和\"懂算理\"是两回事</b>，这是幼小衔接最需要分清的。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 多条件逻辑推理与表达</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>排除法</b>——把不符合的都去掉，剩下的就是答案；<b>集合图</b>——带交集的圈圈图，看谁同时属于两类。</p>\n<p><b>要点：</b>语言推理、线索推理、二维分类；从\"会做\"到\"会说\"，用语言把思考过程外化——在小学课堂，\"会说\"就是\"真会\"的标志。</p>\n<p><b>易错：</b>能答对但说不清为什么——\"逻辑表达\"需要专门训练，不是自然就会的。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 立体空间——从平面到立体</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>认识正方体、长方体、圆柱、圆锥；<b>展开图</b>——把立体盒子剪开摊平的样子，反过来要能从展开图想还原；<b>镜面对称</b>——镜子里左右翻转。</p>\n<p><b>要点：</b>\"面→体\"构成感知；重叠透视判断堆叠顺序；格内对称补全。</p>\n<p><b>易错：</b>看展开图想不出折起来什么样——二维到三维的转换靠动手积累，多折多拆。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 数概念运用</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>序数</b>——\"第几个\"，排队问题的高频根；<b>单双数</b>——能两个两个配对的是双数，剩一个是单数（开关灯、过河这类经典题的根）；平均分——每份同样多。</p>\n<p><b>要点：</b>移多补少把不等变相等；序数与排队位置综合。</p>\n<p><b>易错：</b>单双数靠背，不理解\"配对剩一个\"的本义；排队题把\"第几\"当\"共有\"。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 入学准备力</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>适应课堂节奏的能力——听懂并复述指令、按步骤完成任务、坐得住 40 分钟、用\"时间 + 人物 + 事情 + 结果\"完整表达。</p>\n<p><b>要点：</b>在模拟课堂情境下反复练习\"任务理解 + 规则切换\"。</p>\n<p><b>易错：</b>在家能做很久，一到集体环境就分心——不是态度问题，是规则切换能力不足。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>20 以内不进退位加减</td><td>背答案、情境一换就乱</td><td>走完\"具象→图示→心算\"三步</td></tr>\n<tr><td>排除法综合推理</td><td>条件多就乱</td><td>先理条件再推结论，说\"为什么\"</td></tr>\n<tr><td>正方体展开图</td><td>想不出还原</td><td>动手折、再闭眼想</td></tr>\n<tr><td>单双数应用</td><td>开关灯方向搞反</td><td>回到\"配对剩一个\"本义</td></tr>\n<tr><td>镜面对称</td><td>左右翻转分不清</td><td>照镜子游戏 + 对称补全</td></tr>\n<tr><td>移多补少</td><td>把差全移过去</td><td>画一一对应图看\"差的一半\"</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「还有一年上小学，要不要提前把一年级学一遍？」</div>\n<p><b>沟通思路：</b>幼小衔接的核心不是知识量，是<b>思维深度</b>。抢跑学的\"记步骤\"，孩子一变情境就不会，后半程反而回落；有算理的孩子才是真接得住。</p>\n<p><b>常见误区：</b>把\"零基础\"理解成\"什么都还没学就完了\"——专注习惯、表达、任务执行这些\"隐形基础\"才是分水岭。</p>\n<div class=\"script-block\">一年级的坎不在认多少数，在\"听得懂指令、跟得上节奏、说得出想法\"。这三样练扎实了，知识本身学得很快；光抢跑知识，二年级后半最容易掉下来。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「孩子挺聪明，就是不爱说为什么。」</div>\n<p><b>沟通思路：</b>\"心里明白\"到\"能说清楚\"中间隔着<b>逻辑表达</b>这一关，要专门练：做完题请他当小老师讲一遍。</p>\n<p><b>常见误区：</b>答对就算过，不追问思路——表达训练的窗口就错过了。</p>\n<div class=\"script-block\">以后他做对题，您就追问一句\"你是怎么想的？先看什么、再看什么？\"讲得出过程，才算是真会，上学后老师也最爱这种孩子。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「在家能坐很久，一上课就分心，专注是老师的事吧？」</div>\n<p><b>沟通思路：</b>专注力一半在家庭习惯里养成：固定学习角、限时任务、完成后自己检查。集体环境的分心是\"任务理解 + 规则切换\"能力不足，可以练。</p>\n<p><b>常见误区：</b>把课堂专注全寄托给老师管——家庭端没有\"坐下来完成任务\"的日常，课堂习惯没有根。</p>\n<div class=\"script-block\">在家每天固定 15-20 分钟\"小课堂\"：一个任务、限时完成、做完自己检查一遍。习惯带进教室，孩子就不慌。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n布鲁纳的<b>表征理论</b>（动作表征 → 图像表征 → 符号表征）正对应\"具象操作 → 图示 → 心算\"三步，跳跃表征阶段是幼儿算错和死记的根源；\n<b>自我效能感</b>靠一次次成功体验累积——模拟课堂上\"我能坐满 40 分钟\"就是最好的效能训练；表达训练的本质是让<b>思维外化</b>，说出来的才是能迁移的。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>六岁不是比谁先学了多少，而是谁能带着思考的习惯走进教室——那才叫\"降维打击\"。</div>\n"},{"title":"幼儿篇 · 综合练习与自测","badge":"第一篇 · 幼儿阶段","icon":"✏️","duration":"15 分钟","type":"quiz","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第一篇 · 幼儿阶段</span>\n<h1>📝 幼儿篇综合练习（S1-S3）</h1>\n<div class=\"duration\">⏱ 计划学习 15 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n共 <strong>15 题</strong>，按「易 → 中 → 难」三档排列，覆盖本篇全部核心知识点。\n<strong>先选好答案，再点「提交」</strong>；提交后逐题展示对错、参考答案与简要解析。\n本练习<strong>不设通过线</strong>，只显示实际答对题数，可以反复重做。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">📋 复习要点小结 / 自测清单</h3>\n<p style=\"font-size:13px;color:var(--text-secondary);margin-bottom:12px\">对照清单逐条自查，没把握的回看对应章节。勾选状态自动保存。</p>\n</div>\n"},{"title":"小学篇 · 低年级 S4-S5","badge":"第二篇 · 小学阶段","icon":"📘","duration":"15 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第二篇 · 小学阶段</span>\n<h1>📘 低年级 S4-S5：计算算理·乘除跨越</h1>\n<div class=\"duration\">⏱ 计划学习 15 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>S4（一年级）在起跑阶段把<strong>理解力、方法感、规范感</strong>同时打牢——从听懂到读懂、从直觉作答到按步骤解题、从做完就停到做完会检查。\nS5（二年级）完成小学第一个真正的难度跨越：<strong>从加减思维到乘除思维、从一步列式到分步表达、从做完就行到做完会验</strong>。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 20 以内进退位加减（S4）——凑十法与破十法</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>凑十法</b>——看大数、拆小数、凑成十：8+5，把 5 拆成 2 和 3，8+2=10，10+3=13。<b>破十法</b>——退位减先破十：13-5，把 13 拆成 10 和 3，10-5=5，5+3=8。</p>\n<p><b>要点：</b>先通过实物和数形结合真正理解数量逻辑，再追求速度；认识个位十位，构建整体与部分关系。</p>\n<p><b>易错：</b>只靠掰手指——数感没建立，速度永远上不去；看到\"一共\"就加——先分清\"整体\"和\"部分\"再下笔。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 审题四步 SOP（S4）——把\"不粗心\"变成流程</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>指读圈画 → 动手画图 → 规范列式 → 倒推检查</b>——拿到题的固定动作顺序。</p>\n<p><b>要点：</b>看错符号、漏题、文字题瞎凑数，本质是<b>算理不清 + 审题流程不稳定</b>，不是态度差。流程建立起来，粗心率才真正下降。</p>\n<p><b>易错：</b>把粗心当态度问题去批评——流程没建立，批评没用；\"多刷题\"同样解决不了流程问题。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 一年级应用题基础（S4）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>一图四式</b>——一幅图写出两加两减四个算式，体会加减互逆；<b>隐藏与多余条件</b>——题里有的数不一定都用。</p>\n<p><b>要点：</b>红绿灯法则规范列式步骤；排队问题区分\"第几个\"与\"有几个\"，<b>重叠要减 1</b>；移多补少把不一样多变成一样多。</p>\n<p><b>易错：</b>长题里有几个数就用几个数凑；排队题忘记把自己数了两次。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 乘法意义与口诀（S5）——从\"顺口溜\"到\"真会用\"</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>乘法是<b>同数连加</b>的简便算法——\"3 个 5 相加\"记作 3×5。</p>\n<p><b>要点：</b>在理解\"几个几\"的基础上连成口诀网，正着用、倒着用、拆着用都行（3×5=15，那 15÷3 也能秒答）；乘加乘减先算乘。</p>\n<p><b>易错：</b>顺口溜背得溜，换个顺序就卡壳——乘法意义没建立；3×5 和 5×3 的情境区分不清。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 除法两种情境（S5）——平均分 vs 包含除</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>平均分</b>——知道总数和份数，求每份多少（14 块饼干分 4 人）；<b>包含除</b>——知道总数和每份多少，求能分几份（14 块饼干每人 3 块能分几人）。</p>\n<p><b>要点：</b>先判情境、再选方法；带余除法牢记<b>余数 ＜ 除数</b>。</p>\n<p><b>易错：</b>看到\"分\"字就用除法；余数比除数还大——说明商还能再大一点。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">6. 两步应用题（S5）——中间问题法</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>两步题难在<b>中间问题</b>——先求什么、算出来的结果怎么用到下一步。</p>\n<p><b>要点：</b>把复杂问题拆成两问：\"先求什么 → 再求什么\"，分步列式不跳步；做完验算。</p>\n<p><b>易错：</b>读完题拿两个数瞎凑——缺的不是练习量，是拆解路径。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>20 以内进退位</td><td>掰手指、速度慢</td><td>先懂凑十破十的理，再练熟</td></tr>\n<tr><td>审题与检查习惯</td><td>看错符号、漏题</td><td>四步 SOP 固定成肌肉记忆</td></tr>\n<tr><td>排队问题</td><td>重叠不减 1</td><td>画圈圈图，数两次的位置标出来</td></tr>\n<tr><td>表内乘除</td><td>口诀单向、乘除混用</td><td>回\"几个几\"，先判情境再列式</td></tr>\n<tr><td>带余除法</td><td>余数 ≥ 除数</td><td>\"余数必须比除数小\"过口关</td></tr>\n<tr><td>两步应用题</td><td>瞎凑数</td><td>先找中间问题，分步写清</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「孩子就是粗心，看错符号、漏题。」</div>\n<p><b>沟通思路：</b>一年级\"粗心\"九成不是态度，是<b>算理不清 + 审题流程不稳</b>。对策是建立四步 SOP，把正确流程固定下来，而不是加倍刷题。</p>\n<p><b>常见误区：</b>靠疯狂刷题纠正——刷题刷不出流程，反而越刷越乱、越刷越怕。</p>\n<div class=\"script-block\">咱在家就练四个动作：手指着读题、圈出数字和关键词、画个图、做完回头看一眼。坚持三周变成习惯，\"粗心\"自己就下去了。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「熟题都会做，一变题就乱，多刷几道就好了吧？」</div>\n<p><b>沟通思路：</b>变题就乱，说明孩子<b>只会记结果、不会想过程</b>。缺的是画图、拆解、建模这些方法，不是题量。</p>\n<p><b>常见误区：</b>用题量对抗变式题——战术勤奋掩盖方法缺失。</p>\n<div class=\"script-block\">变着花样的题，刷十道不如讲透一道：让他画图画出关系、说说每步为什么。方法有了，陌生的题也就不怕了。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「口诀背了半年，做题还是卡壳，就是不用心。」</div>\n<p><b>沟通思路：</b>卡壳说明<b>乘法意义</b>没建立——只会单向顺口溜，不会双向调用。回到\"几个几\"，用实物摆出来。</p>\n<p><b>常见误区：</b>继续加长背诵时间——背的方向不对，练得越久越僵。</p>\n<div class=\"script-block\">别再逼他背了，摆积木：\"3 排，每排 5 个，一共几个？\"他数出来再写 3×5。意义懂了，口诀才是活的。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n解题流程属于<b>程序性知识</b>，靠\"步骤固定 + 反复执行\"才能自动化，自动化后工作记忆被释放出来，孩子才有余力想\"为什么\"；\n<b>归因理论</b>提醒我们：把粗心归因到\"方法（可改）\"而不是\"态度（挨骂）\"或\"能力（天生的）\"，孩子才会真的去改；\n低年级的习惯干预窗口最宽，是性价比最高的阶段。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>低年级不是比谁学得早，而是比谁起步更稳——计算有理、审题有流程、做完会检查。</div>\n"},{"title":"小学篇 · 中年级 S6-S7","badge":"第二篇 · 小学阶段","icon":"📗","duration":"15 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第二篇 · 小学阶段</span>\n<h1>📗 中年级 S6-S7：分数概念·抽象建模</h1>\n<div class=\"duration\">⏱ 计划学习 15 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>S6（三年级）是小学第一道<strong>分水岭</strong>——分数登场、多位数乘除成为日常、应用题从两步跃到三四步。\nS7（四年级）是<strong>抽象思维转折点</strong>——大数、角度几何、相遇追及、小数乘除全面升级。\n这两年要完成的跨越：从\"具体数量\"到\"分数概念\"，从\"直来直往\"到\"多步策略\"，从\"看题就猜\"到\"画图建模\"。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 分数的份数意义（S6）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>分数表示\"<b>整体被平均分成几份，取其中的几份</b>\"。分母 = 分几份，分子 = 取几份。</p>\n<p><b>要点：</b>用实物分份和图示建立\"整体与部分\"关系；同分母分数加减；比较大小先画图。</p>\n<p><b>易错：</b>分子分母搞反、比较大小时靠猜——\"份数\"意义没建立，只在做表面数字游戏。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 多位数乘除与巧算（S6）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>位值</b>——同一个数字在不同数位代表的大小不同；<b>巧算</b>——凑整、拆分、用运算律把难算变好算。</p>\n<p><b>要点：</b>建立位值感 + 巧算策略，让三位数乘两位数、多位数除法又对又快；除法竖式商的位置规范。</p>\n<p><b>易错：</b>竖式缺位漏位；只机械套竖式，不懂位值和运算律的灵活运用。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 多步应用题——问题链拆解（S6）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>三四步大题拆成<b>中间问题链</b>：先求什么 → 已知什么 → 怎么连起来。</p>\n<p><b>要点：</b><b>假设法</b>（鸡兔同笼：全假设 → 算差 → 除以差值）、<b>列表法</b>；<b>归一问题</b>先求\"一份\"再推几份；周期问题先算余数。</p>\n<p><b>易错：</b>做到一半就乱或直接空着——缺的不是聪明，是\"分层提取信息 + 策略规划\"的路径。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 大数与数级分层（S7）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>数级</b>——个级、万级、亿级，四位一级分层读写。</p>\n<p><b>要点：</b>先分级再读写，四舍五入先看舍入位的后一位。</p>\n<p><b>易错：</b>大数读写多零少零、四舍五入乱用——位值概念没结构化，靠直觉硬记。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 几何初步与面积推导（S7）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>三角形任意<b>两边之和大于第三边</b>（不能取等号）；<b>内角和</b>——三个角拼起来正好是平角 180°，是\"拼出来\"的，不是背的；<b>割补转化</b>——把新图形切成补成学过的长方形求面积。</p>\n<p><b>要点：</b>平行四边形、三角形、梯形面积公式都要能从长方形推出来；<b>一半模型</b>——等底等高，面积一半。</p>\n<p><b>易错：</b>只背公式不理解来源，一变形就不会；\"两边之和等于第三边\"误以为能围成三角形。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">6. 行程问题与线段图（S7）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>核心模型 <b>路程 = 速度 × 时间</b>；相遇问题 = 速度和 × 时间。</p>\n<p><b>要点：</b>先画标准线段图、标起点标方向，再找等量关系列式。</p>\n<p><b>易错：</b>读完题就懵、不知从哪画起——等量关系提取能力要靠\"每题必画图\"练出来。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">7. 小数运算（S7）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>小数点移动就是<b>位值变化</b>——点右移一位扩大 10 倍，左移一位缩小到十分之一。</p>\n<p><b>要点：</b>整数运算律（凑整、拆分）平滑迁移到小数。</p>\n<p><b>易错：</b>小数乘除结果点错位——停在\"背规则\"，没理解\"为什么\"。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>分数意义与比较</td><td>分子分母搞反</td><td>图示分份，先分份再取份</td></tr>\n<tr><td>多位数乘除竖式</td><td>缺位漏位</td><td>位值分层检查，商的位置对位</td></tr>\n<tr><td>鸡兔同笼类假设题</td><td>不知从何下手</td><td>三步：全假设→算差→除以差值</td></tr>\n<tr><td>归一 / 周期问题</td><td>余数用法不清</td><td>先求一份 / 先算余数</td></tr>\n<tr><td>大数读写与四舍五入</td><td>多零少零</td><td>四位一级先分级</td></tr>\n<tr><td>三角形三边 / 内角和</td><td>背公式不推导</td><td>动手拼，讲出\"为什么\"</td></tr>\n<tr><td>相遇追及</td><td>读完就懵</td><td>每题先画线段图标方向</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「三年级突然就跟不上了，是不是不认真？」</div>\n<p><b>沟通思路：</b>三年级是分水岭——分数、多位数乘除、三四步应用题同时上强度，是<b>知识体系和思维方式的整体升级</b>，跟认真关系不大。需要的不是更多刷题，是思维工具升级。</p>\n<p><b>常见误区：</b>归结为\"不认真\"加量刷题——孩子更挫败，缺口还在原地。</p>\n<div class=\"script-block\">三年级这坎是设计给孩子的\"思维升级考\"：老办法不够用了。咱们帮他把画图、拆步这些新工具建起来，跟上之后四五年级反而占优势。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「分数就是上下两个数，多读两遍就懂了。」</div>\n<p><b>沟通思路：</b>分数卡住是<b>份数意义</b>没建立。带孩子切披萨、折纸：先\"平均分成几份\"，再\"取几份\"，图一画就透。</p>\n<p><b>常见误区：</b>反复讲符号规则——\"分母大分数大\"之类的口诀背一堆，整体与部分的关系还是空的。</p>\n<div class=\"script-block\">家里切披萨就是最好的教具：切 4 块取 1 块，就是四分之一。让孩子分着说\"分几份、取几份\"，比背规则管用。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「四年级了，题都读得懂，就是列不出式。」</div>\n<p><b>沟通思路：</b>\"读懂题但列不出式\"是<b>等量关系提取</b>没建立——思维方式要从\"直觉型\"升级为\"建模型\"。固定动作：先画图（线段图），再标数量，关系自然浮出来。</p>\n<p><b>常见误区：</b>要求孩子\"再多想一会儿\"——没有工具，想多久都是原地打转。</p>\n<div class=\"script-block\">以后遇到绕的题，咱第一句话永远是：\"先画个图。\"把文字变成线段图，谁多谁少、怎么走，一眼就看出来了。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n<b>认知负荷理论</b>：多步题把工作记忆挤爆，\"中间问题链\"的本质就是把大负荷拆成小步；\n<b>图式理论</b>：题型建模就是把解题经验打包成\"一看到这类特征就调出对应方法\"的图式；\n<b>学习迁移</b>：运算律从整数迁到小数、面积公式从长方形迁到梯形，都是\"抓不变结构\"的正迁移，讲透一个，带动一类。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>中年级不是比谁算得快，而是比谁先学会\"画图建模、按步拆解\"——分水岭上站稳了，后面全是顺路。</div>\n"},{"title":"小学篇 · 高年级 S8-S9","badge":"第二篇 · 小学阶段","icon":"📕","duration":"15 分钟","type":"content","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第二篇 · 小学阶段</span>\n<h1>📕 高年级 S8-S9：代数思维·综合冲刺</h1>\n<div class=\"duration\">⏱ 计划学习 15 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n<strong>阶段定位：</strong>S8（五年级）是小学的<strong>代数化拐点</strong>——分数四则全面展开、方程正式登场、面积要靠策略而非套公式，思维要从\"算术型\"升级为\"代数型\"。\nS9（六年级）是<strong>收官冲刺</strong>——所有知识交汇，要建立\"看题识别题型 → 选策略 → 综合求解 → 解后反思\"的元认知能力，直击小升初压轴。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🧠 重点知识讲解（概念 → 要点 → 易错点）</h3>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">1. 因倍质合（S8）——分数运算的地基</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>因数</b>——能整除它的数；<b>倍数</b>——它乘整数得到的数；<b>质数</b>——只有 1 和它自己两个因数；<b>公因数 / 公倍数</b>——几个数共有的因数 / 倍数。</p>\n<p><b>要点：</b>先把质因数分解和公因公倍打透，再衔接约分通分——分数运算每一步都有据可循；掌握 2、3、5 等整除特征。</p>\n<p><b>易错：</b>约分不彻底、通分找错公倍数——机械背步骤，因倍关系地基是空的。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">2. 方程建模（S8）——从算术到代数</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>方程</b>就是用未知数 x 把\"文字里的数量关系\"写成\"等式\"。<b>等量关系</b>是桥：\"笔的钱 + 本子的钱 = 总价\"。</p>\n<p><b>要点：</b>标准化流程四步——<b>设 → 列 → 解 → 验</b>，一步不能少；先找等量关系，再设未知数。</p>\n<p><b>易错：</b>设不来未知数、等量关系找不准、解完不检验——\"x 代替问号换个写法\"是误解，方程是全新的代数思维。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">3. 面积策略（S8）——割补、容斥、差不变</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>割补法</b>——切开挪一挪，拼成规则图形；<b>容斥法</b>——大图形减去小图形求剩下；<b>差不变</b>——两个图形同时加（减）同一块，面积差不变。</p>\n<p><b>要点：</b>先理解每种策略的适用场景，再变式训练\"看题选策略\"。</p>\n<p><b>易错：</b>标准图形会套公式，稍加变化就懵——公式会背、推导没懂、策略不会选。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">4. 复杂行程（S8）——火车过桥与多对象</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>火车过桥走过的路程 = <b>桥长 + 车身长</b>——车身长度要算进去，这是与普通行程最大的区别。</p>\n<p><b>要点：</b>多对象、多阶段行程用方程统一建模，避免\"一题一招\"。</p>\n<p><b>易错：</b>忘了加（或减）车身长；多火车问题硬猜不用方程。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">5. 圆与扇形（S9）——从公式记忆到推导运用</div>\n<div class=\"kp-body\">\n<p><b>概念：</b>圆的周长面积是\"<b>割圆</b>\"推出来的——把圆切成小扇形拼成近似长方形；<b>扇形</b>就是圆的一部分，面积按圆心角比例算。</p>\n<p><b>要点：</b>曲边图形用\"割补拼合、整体代入\"化归成圆的加减。</p>\n<p><b>易错：</b>曲边图形不知从何入手——先找\"它跟整个圆是什么比例关系\"。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">6. 几何四大模型与综合题元认知（S9）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>鸟头、蝴蝶、燕尾、相似</b>四大模型是几何压轴的常用工具——鸟头看\"共角\"，蝴蝶看\"对角线交叉\"，燕尾看\"共边三角形\"。</p>\n<p><b>要点：</b>训练\"看图形特征 → 匹配模型 → 选策略\"的识别链；综合题（工程、浓度、行程、经济）先问三句：属于哪类题型？核心关系是什么？怎么列方程？</p>\n<p><b>易错：</b>模型都知道但不会用、条件一变就选错——缺的是\"识别\"这一步，不是\"记忆\"。</p>\n</div>\n</div>\n\n<div class=\"kp-item\">\n<div class=\"kp-head\">7. 分率与单位一（S9 高频）</div>\n<div class=\"kp-body\">\n<p><b>概念：</b><b>单位一</b>——被比的量。找单位一是分数应用题第一动作：\"是谁的几分之几\"，\"的\"字前面就是单位一。</p>\n<p><b>要点：</b>单位一相同直接加减分率；单位一不同先统一。百分数 = 部分 ÷ 整体。</p>\n<p><b>易错：</b>单位一没找对就列式——分率计算错一大半都是这个根。</p>\n</div>\n</div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">🎯 常见考点速览</h3>\n<div class=\"table-wrap\"><table>\n<thead><tr><th>考点</th><th>孩子易卡点</th><th>辅导要点</th></tr></thead>\n<tbody>\n<tr><td>约分通分</td><td>约不彻底、公倍数找错</td><td>回因倍质合，先拆质因数</td></tr>\n<tr><td>方程应用题</td><td>设不出、不检验</td><td>设列解验四步，等量关系先行</td></tr>\n<tr><td>不规则面积</td><td>一变就懵</td><td>割补 / 容斥 / 差不变，看题选策略</td></tr>\n<tr><td>火车过桥</td><td>忘算车身</td><td>画图标\"车头走的全程\"</td></tr>\n<tr><td>圆与扇形组合</td><td>曲边无从下手</td><td>找与整圆的比例关系</td></tr>\n<tr><td>几何模型压轴</td><td>认不出该用哪个</td><td>练\"特征→模型\"识别链</td></tr>\n<tr><td>分数应用题</td><td>单位一找错</td><td>\"的\"字前面是单位一</td></tr>\n</tbody></table></div>\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">👪 家长关注点与沟通</h3>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「分数的约分通分，多练几道就好了。」</div>\n<p><b>沟通思路：</b>约通分反复错的根在<b>因倍质合基础没打透</b>。先回头补质因数分解和公因公倍，再练分数——顺序对了，练一遍顶十遍。</p>\n<p><b>常见误区：</b>在分数题里无限刷——地基不稳，楼盖不高。</p>\n<div class=\"script-block\">他不是不熟分数，是数论那层地基有点虚。咱们回头把\"质数、公因数\"补扎实，约分通分马上顺——磨刀不误砍柴工。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「方程不就是 x 代替问号，换个写法？」</div>\n<p><b>沟通思路：</b>方程是<b>从算术到代数的思维跨越</b>——以前是\"顺着算\"，现在是\"把关系摆成等式再解\"。这个跨越建立好了，初中数学直接受益。</p>\n<p><b>常见误区：</b>嫌方程\"绕\"退回算术法——难题里算术法越来越吃力，方程才是通途。</p>\n<div class=\"script-block\">简单题算术快，可难题里\"顺着算\"会绕晕，方程是把等量关系直接写下来，再难的题都是同一套\"设列解验\"。这是给初中提前修路。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「六年级内容不多，主要是复习了吧？」</div>\n<p><b>沟通思路：</b>六年级上学期还有<b>圆、百分数、比</b>大量新知识，再加上同步综合题，是\"新学 + 同步综合\"双重压力，最容易被低估。</p>\n<p><b>常见误区：</b>放松上学期节奏——压轴短板往往就是这时埋下的。</p>\n<div class=\"script-block\">六年级上学期其实一点不轻松：圆、百分数都是新内容，还马上要综合到一起考。咱们节奏不松，上学期扎稳，下学期冲刺才有力。</div>\n</div>\n\n<div class=\"scene-card\">\n<div class=\"sc-q\">💬「几何模型背下来，套上去就行了吧？」</div>\n<p><b>沟通思路：</b>模型的价值在<b>识别</b>——看图形特征选对模型，条件一变照样能用；只会背模板，条件一变就选错。</p>\n<p><b>常见误区：</b>抄模型笔记替代图形训练——识别能力是练出来的，不是抄出来的。</p>\n<div class=\"script-block\">模型是\"工具箱\"，关键是认得清该拿哪把工具。我们专门练\"看特征选模型\"，他看到交叉线、共角这些信号，工具自己就跳出来了。</div>\n</div>\n\n<div class=\"psy-box\"><span class=\"psy-t\">🧩 教育心理学视角</span>\n奥苏贝尔的<b>先行组织者</b>：先立\"因倍质合\"这个地基框架，分数的新知识才有地方挂——顺序错了，学得越多越乱；\n高年级是<b>元认知</b>（计划-监控-反思）发展的黄金期，\"解完题问自己为什么这样做\"直接决定压轴题上限；\n<b>变式训练</b>（一题多变）是促进迁移的最有效手段，胜过同型题重复刷。</div>\n</div>\n\n<div class=\"highlight-box success\"><strong>本阶段一句话：</strong>高年级不是比谁刷得多，而是比谁会\"识别题型 → 选对策略 → 做完反思\"——这才叫全面冲刺。</div>\n"},{"title":"小学篇 · 综合练习与自测","badge":"第二篇 · 小学阶段","icon":"✏️","duration":"15 分钟","type":"quiz","content":"\n<div class=\"section-header\">\n<span class=\"section-badge\">第二篇 · 小学阶段</span>\n<h1>📝 小学篇综合练习（S4-S9）</h1>\n<div class=\"duration\">⏱ 计划学习 15 分钟</div>\n</div>\n\n<div class=\"highlight-box\">\n共 <strong>15 题</strong>，按「易 → 中 → 难」三档排列，覆盖本篇全部核心知识点。\n<strong>先选好答案，再点「提交」</strong>；提交后逐题展示对错、参考答案与简要解析。\n本练习<strong>不设通过线</strong>，只显示实际答对题数，可以反复重做。\n</div>\n\n<div class=\"card\">\n<h3 class=\"card-title\">📋 复习要点小结 / 自测清单</h3>\n<p style=\"font-size:13px;color:var(--text-secondary);margin-bottom:12px\">对照清单逐条自查，没把握的回看对应章节。勾选状态自动保存。</p>\n</div>\n"}],"chapterQuizzes":[[],[],[],[],[{"level":"易","q":"小班孩子点数时\"嘴数到 8，手已经点到 10\"，最该先练什么？","opts":["背熟 1-100","手口一致点数：点一个、数一个","直接学加法","多做口算题"],"correct":1,"explain":"嘴手不齐 = 一一对应没建立。先慢下来练\"点一个数一个\"，数和物配上了，数感才有根。背数和口算都解决不了这个问题。"},{"level":"易","q":"同样 5 颗糖，摆成一排孩子说 5 颗，堆成一堆就说 3 颗。孩子卡在哪个概念上？","opts":["加减法","数量守恒","图形认知","分类"],"correct":1,"explain":"数量守恒 = 换了摆法数量不变。别急着纠正答案，带孩子\"再数一遍\"，用计数验证排除摆法干扰，多情景反复感知自然过。"},{"level":"易","q":"正方形斜着放孩子就不认识了，图形认知的问题出在哪？","opts":["记性差","只记了图形的\"标准姿势\"，没抓特征","视力问题","太粗心"],"correct":1,"explain":"图形认知的关键是特征（四条边一样长、四个角），不是某个方向的样子。多角度、多形态摆着认，再用拼摆切割验证。"},{"level":"易","q":"孩子找不同总漏掉细节，最有效的引导是？","opts":["多做几遍","先教\"从上到下、从左到右\"的有序观察顺序","换更难的图","直接指出答案"],"correct":1,"explain":"有序观察 = 先定顺序再找差异。\"先看哪里、再看哪里\"定下来，\"漏\"自然就少。换更难的图只会更漏。"},{"level":"易","q":"孩子把\"从前面数第 3 个\"理解成\"一共 3 个人\"，这考的是哪对概念？","opts":["加与减","基数与序数","单数与双数","多与少"],"correct":1,"explain":"序数是\"第几个\"（位置），基数是\"有几个\"（数量）。排队情景最常混，用\"第几个站谁\"和\"一共几人\"两个问题对照练。"},{"level":"中","q":"中班孩子会算 1+2=3，但问\"3 个苹果再给几个变成 5 个\"就答不出。先补什么？","opts":["更大的数","在实物操作中感知\"总数 = 部分 + 部分\"的分合关系","背加法口诀","学竖式"],"correct":1,"explain":"会背答案 ≠ 建立数量关系。回到分一分、合一块的操作，让孩子自己发现\"少几个补几个\"，比讲十遍都管用。"},{"level":"中","q":"大班\"平均分\"的关键要求是？","opts":["分得快","每份同样多","分完有剩","先分给个子高的"],"correct":1,"explain":"平均分两个要点：分完、每份一样多。这是以后除法\"平均分\"情境的直接地基，动手分一分比说十遍清楚。"},{"level":"中","q":"经典开关灯题：灯原来是关的，按 1 下开、按 2 下关、按 3 下开……按 7 下灯是什么状态？用的是哪个规律？","opts":["加法规律；按 7 下灯关着","单双数规律；奇数次变状态，按 7 下灯开着","周期规律；每 3 次循环","对称规律"],"correct":1,"explain":"开关灯是经典单双数推理：单数次（奇数）改变状态、双数次（偶数）回原样。按 7 下是单数次，灯开着。理解根在\"两个两个配对\"。"},{"level":"中","q":"哥哥有 8 颗糖，弟弟有 4 颗，哥哥给弟弟几颗，两人就一样多？","opts":["4 颗","2 颗","3 颗","1 颗"],"correct":1,"explain":"相差 8-4=4 颗，移走\"差的一半\"= 2 颗。答 4 颗是高频错答——给了 4 颗哥哥剩 4、弟弟变 8，正好反过来。用一一对应画图看最直观。"},{"level":"中","q":"孩子拼七巧板\"拼对了但说不清为什么这么摆\"，下一步最该练什么？","opts":["直接拼更难的","拼之前先说思路：有几块、什么形状、怎么摆","把每种拼法背下来","换积木玩"],"correct":1,"explain":"从\"动手试\"到\"先想后做\"是中班方法意识的核心。让思路说出来，空间感觉才升级为空间推理，遇新题才有办法。"},{"level":"难","q":"排队问题：从前往后数小宇排第 4，从后往前数排第 5，这一队一共有多少人？","opts":["9 人","8 人","7 人","10 人"],"correct":1,"explain":"4+5=9 里小宇被数了两次，要减 1：4+5-1=8 人。\"重叠减 1\"是幼小衔接高频考点，画圈圈图数一遍最清楚。"},{"level":"难","q":"大班学\"镜面对称\"。孩子写\"2\"总写成镜像反过来的样子，从对称角度最合适的练习是？","opts":["多写几遍就好","玩\"照镜子\"游戏：对着镜子写画，感知左右翻转，再做对称补全","罚抄十遍","不用管，长大自然好"],"correct":1,"explain":"镜面对称（左右翻转）是空间知觉发展内容，游戏化体验比机械抄写有效。先感知\"镜子里左右反过来了\"，再做格内对称补全。"},{"level":"难","q":"综合推理：三个小朋友比高矮。已知\"小明比小红高\"\"小刚比小明矮\"，谁一定最高？","opts":["小红","小刚","小明","无法确定"],"correct":2,"explain":"小红比小明矮、小刚也比小明矮，所以小明一定最高；小红和小刚谁高无法比较。\"一定\"和\"可能\"要分开——这是排除法推理的要点。"},{"level":"难","q":"正方体展开图判断：下面哪种展开图不能折成正方体？","opts":["\"一四一\"型：一行 4 个，上、下各 1 个","\"二二二\"阶梯型","一行 5 个连排","\"二三一\"型"],"correct":2,"explain":"正方体展开图共 11 种，常见口诀\"一四一、二三一、二二二、三三\"。一行超过 4 个必有面重叠，折不成正方体。让孩子动手剪折一次，胜过背十遍。"},{"level":"难","q":"盒子里有红、黄、蓝三种颜色的球。明明说：\"不是红的，也不是黄的。\"盒子里是什么球？这题练的核心方法是什么？","opts":["红球；猜的方法","黄球；配对方法","蓝球；排除法——把不符合的都去掉，剩下的就是答案","无法确定；条件不够"],"correct":2,"explain":"排除法是大班\"多条件推理\"的典型训练：不是红、不是黄，剩下的就是蓝。引导孩子完整说出\"因为不是 A 也不是 B，所以是 C\"，推理和表达一起练。"}],[],[],[],[{"level":"易","q":"用凑十法算 8+5，正确的思考过程是？","opts":["8+5=13，背出来的","把 5 拆成 2 和 3：8+2=10，10+3=13","8+3=11，11+2=13","15-2=13"],"correct":1,"explain":"凑十法 = 看大数、拆小数、凑成十。C 和 D 结果碰巧对，但过程不是凑十。一年级重点是\"为什么这样拆\"，理解算理而不是背结果。"},{"level":"易","q":"有余数的除法：□÷6=8……□，余数最大是几？","opts":["7","6","5","8"],"correct":2,"explain":"余数必须小于除数，除数是 6，余数最大是 5。\"余数＜除数\"是带余除法第一考点：余数要还能再分一轮，商才没算小。"},{"level":"易","q":"\"3 盘苹果，每盘 5 个\"用哪个算式表示？","opts":["3+5","5-3","3×5","15÷3"],"correct":2,"explain":"乘法是\"几个几\"——3 个 5 相加记作 3×5。分清\"3 个 5\"和\"5 个 3\"的情境，口诀才能双向调用，15÷3 是知道总数反着求。"},{"level":"易","q":"把 12 个苹果看作整体，它的 3/4 是多少个？","opts":["3 个","4 个","9 个","6 个"],"correct":2,"explain":"分母 4 = 平均分成 4 份，每份 3 个；分子 3 = 取 3 份 = 9 个。先分份、再取份，分数就不靠猜——这就是\"份数\"意义。"},{"level":"易","q":"两步应用题\"买 3 支笔每支 4 元，付 50 元找回多少\"，第一步先求什么？","opts":["找回多少钱","3 支笔一共多少钱（3×4=12）","一支笔多少钱","50-4 等于多少"],"correct":1,"explain":"两步题的关键是找\"中间问题\"——题里没有直接给、但下一步要用的数量。先算笔的总价 12 元，再算 50-12=38 元。中间问题找到了，步骤自然清楚。"},{"level":"中","q":"两个情境：「14 块饼干平均分给 4 个小朋友」和「14 块饼干每人分 3 块，能分给几个人」。它们的区别是？","opts":["没区别，都是 14÷4","前者是平均分（知总数和份数求每份），后者是包含除（知总数和每份求份数）","都是平均分","都是包含除"],"correct":1,"explain":"除法两大情境：平均分 = 知总数、知份数、求每份；包含除 = 知总数、知每份、求份数。先判情境再列式，就不会\"看到分字就用除法\"。"},{"level":"中","q":"鸡兔同笼：头 10 个，脚 28 只。假设全是鸡，脚应有 20 只，比实际少 8 只；每把一只鸡换成兔多 2 只。兔有几只？","opts":["2 只","4 只","6 只","8 只"],"correct":1,"explain":"8÷2=4 只兔，鸡 6 只。假设法三步：全假设 → 算差 → 除以差值。列表法也能做，但假设法是能迁移到更多题型的通用策略。"},{"level":"中","q":"把 6305000 四舍五入到万位是多少？","opts":["630 万","631 万","630.5 万不用变","63 万"],"correct":1,"explain":"先分级\"630|5000\"：万位是 0、千位是 5。四舍五入看舍入位的后一位——千位是 5 要进一，得 631 万。数级分层做，就不会多零少零。"},{"level":"中","q":"三条线段长 3cm、5cm、8cm，能围成三角形吗？","opts":["能","不能：3+5=8，两边之和等于第三边，围不成","能，只要摆得巧","无法判断"],"correct":1,"explain":"三角形任意两边之和\"大于\"第三边，等于不行——3+5=8 是取等，拼起来是平躺的一条线段。\"大于不能取等号\"是高频易错点。"},{"level":"中","q":"两地相距 300 千米，两车同时相向而行，甲车每小时 60 千米，乙车每小时 40 千米，几小时相遇？","opts":["3 小时","5 小时","6 小时","2 小时"],"correct":0,"explain":"相遇问题用速度和：60+40=100 千米/时，300÷100=3 小时。核心模型\"路程 = 速度和 × 相遇时间\"，先画线段图标方向更稳。"},{"level":"难","q":"小明买了 2 支笔和 1 个本子共 11 元，本子 5 元，笔每支 x 元。列方程正确的是？","opts":["2x+5=11","2x-5=11","x+5=11","2x=11+5"],"correct":0,"explain":"等量关系：\"笔的钱 + 本子的钱 = 总价\"，即 2x+5=11。方程建模核心是把文字关系摆成等式，然后设 → 列 → 解 → 验，一步不省。"},{"level":"难","q":"今天是星期三，再过 100 天是星期几？","opts":["星期三","星期四","星期五","星期六"],"correct":2,"explain":"周期问题先算余数：100÷7=14 余 2，从周三往后数 2 天是星期五。\"商是几圈、余数才是答案\"，余几就再数几天。"},{"level":"难","q":"20 克糖水里含糖 4 克，再加 30 克水，现在的浓度是多少？","opts":["20%","12%","8%","10%"],"correct":2,"explain":"加水时糖不变（4 克）、总量变 50 克：4÷50=8%。浓度问题第一策略是抓\"不变量\"——加水的题抓糖，蒸发的题也是抓糖。"},{"level":"难","q":"两个三角形等底等高，其中一个面积是 12 平方厘米，另一个的面积是？","opts":["6 平方厘米","12 平方厘米","24 平方厘米","无法确定"],"correct":1,"explain":"等底等高 → 面积相等，长得不一样不影响。\"面积 = 底×高÷2\"只由底和高决定——这是推导式几何思维的关键一步，也是一半模型的根。"},{"level":"难","q":"一项工程甲单独做 10 天完成，乙单独做 15 天完成，两人合作几天完成？","opts":["5 天","6 天","12.5 天","25 天"],"correct":1,"explain":"把总量看作单位\"1\"：甲每天做 1/10，乙每天做 1/15，合作 1÷(1/10+1/15)=6 天。\"工作量 = 效率 × 时间\"，先定单位\"1\"是第一动作。"}]],"selfChecks":{"4":["能讲清\"手口一致点数\"练什么、练到什么程度算过关","能用一句话给家长解释\"数量守恒\"和\"一一对应\"","能说出图形认知的高频易错点（斜放不认识、三角梯形混淆）及原因","能按\"具象 → 图示 → 心算\"三步讲清大班加减算理","能区分基数与序数，并说出排队\"重叠减 1\"的解法","能就\"太早学\"\"教了不会\"\"专注力差\"三类高频问题给出有理论支撑的沟通话术","能说出 S1、S2、S3 各阶段 2-3 个高频考点","15 道练习题的解析都看过，错题对应的知识点已回看"],"8":["能讲清凑十法、破十法的算理过程","能说出\"粗心\"背后的两个底层原因：算理不清 + 审题流程不稳","能区分平均分与包含除，并讲清\"余数＜除数\"","能用\"中间问题法\"拆两步、多步应用题","能给家长讲清分数的\"份数\"意义","能写出方程建模四步：设 → 列 → 解 → 验","能说出几何四大模型，以及综合题\"识别 → 匹配 → 求解 → 反思\"的元认知框架","能就\"粗心\"\"刷题无效\"\"突然跟不上\"\"背模型\"四类高频问题给出沟通思路","15 道练习题的解析都看过，错题对应的知识点已回看"]}}</script>
+
+<!-- ===== 应用逻辑 ===== -->
+<script>
+// ============================================================
+// 《S1-S9 学段知识复习》微课 · 应用逻辑
+// 数据从 #appDataJson 读取（JSON），避免转义问题
+// 定位：复习资料 · 无视频 · 无 AI · 练习提交后展示答案+解析
+// ============================================================
+const APP = JSON.parse(document.getElementById('appDataJson').textContent);
+const courseData = { title: APP.title, sections: APP.sections };
+const parts = APP.parts || [];
+const chapterQuizzes = APP.chapterQuizzes;
+
+// ---------------- 状态 ----------------
+const LS_PREFIX = APP.lsPrefix;
+let currentSection = 0;
+let completedSections = new Set();
+let quizAnswers = {};     // { chIdx: { qi: selectedOi } }
+let quizSubmitted = {};   // { chIdx: true }
+let checkState = {};      // { chIdx: [bool, ...] }
+
+// 章节时间跟踪：每章计划时长（由 section.duration 解析）+ 实际停留用时
+let sectionPlanSeconds = [];
+let chapterTimeSpent = {};
+let planWarned = {};
+
+// ---- 时间工具 ----
+function fmtMinSec(sec) {
+  if (!isFinite(sec) || sec < 0) sec = 0;
+  const m = Math.floor(sec / 60), s = Math.floor(sec % 60);
+  return m > 0 ? (m + ' 分 ' + s + ' 秒') : (s + ' 秒');
+}
+function planMinutes(str) {
+  const s = String(str || '');
+  const m = s.match(/(\d+)\s*(?:[-~～至]\s*(\d+))?\s*分钟/);
+  if (m) return Math.max(parseInt(m[1], 10), m[2] ? parseInt(m[2], 10) : 0);
+  const h = s.match(/(\d+)\s*(?:个)?\s*小时/);
+  if (h) return parseInt(h[1], 10) * 60;
+  return 0;
+}
+
+// ---- 章节时间跟踪：计划时长 vs 实际停留用时 ----
+function startPlanTracking() {
+  courseData.sections.forEach((s, i) => renderChapterPlan(i));
+  setInterval(() => {
+    if (document.hidden) return;                       // 切到后台不计时
+    const cur = currentSection;
+    chapterTimeSpent[cur] = (chapterTimeSpent[cur] || 0) + 1;
+    if (chapterTimeSpent[cur] % 5 === 0) { renderChapterPlan(cur); saveProgress(); }
+    maybeWarnPlan(cur);
+  }, 1000);
+}
+
+function maybeWarnPlan(chIdx) {
+  const plan = sectionPlanSeconds[chIdx] || 0;
+  if (!plan || planWarned[chIdx]) return;
+  if ((chapterTimeSpent[chIdx] || 0) >= plan) {
+    planWarned[chIdx] = true;
+    showToast('⏱ 本章已到计划时长（约 ' + Math.round(plan / 60) + ' 分钟），可以继续或先歇一会儿', 'warning');
+    saveProgress();
+  }
+}
+
+function renderChapterPlan(chIdx) {
+  const plan = sectionPlanSeconds[chIdx] || 0;
+  if (!plan) return;
+  const section = document.querySelector('.section[data-section="' + chIdx + '"]');
+  if (!section) return;
+  const spent = chapterTimeSpent[chIdx] || 0;
+  let bar = document.getElementById('chapterplan-' + chIdx);
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.className = 'chapter-plan-bar';
+    bar.id = 'chapterplan-' + chIdx;
+    section.insertBefore(bar, section.firstChild);
+  }
+  const pct = Math.min(100, Math.round(spent / plan * 100));
+  const over = spent >= plan;
+  const leftMin = Math.max(0, Math.ceil((plan - spent) / 60));
+  bar.classList.toggle('over', over);
+  bar.innerHTML =
+    '<div class="cp-row"><span class="cp-label">⏱ 本章计划 ' + Math.round(plan / 60) + ' 分钟</span>' +
+    '<span class="cp-spent' + (over ? ' over' : '') + '">已用 ' + fmtMinSec(spent) + '</span>' +
+    '<span class="cp-rest">' + (over ? '已达计划时长，可继续学习' : '还差约 ' + leftMin + ' 分钟') + '</span></div>' +
+    '<div class="cp-track"><div class="cp-fill' + (over ? ' over' : '') + '" style="width:' + pct + '%"></div></div>';
+}
+
+let studySeconds = 0;
+
+// ---------------- 工具函数 ----------------
+function escapeHtml(str) {
+  return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// ============================================================
+// 初始化
+// ============================================================
+function init() {
+  renderSidebar();
+  renderSections();
+  sectionPlanSeconds = courseData.sections.map(s => planMinutes(s.duration) * 60);
+  loadProgress();
+  startTimer();
+  startPlanTracking();
+  loadNotes();
+}
+
+function renderSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  let html = '';
+  parts.forEach(p => {
+    html += '<div class="nav-part">' + escapeHtml(p.name) +
+      '<span class="np-line">第 ' + (p.start + 1) + ' - ' + (p.end + 1) + ' 章</span></div>';
+    for (let i = p.start; i <= p.end; i++) {
+      const s = courseData.sections[i];
+      if (!s) continue;
+      html += '<div class="nav-section" data-index="' + i + '" onclick="navigateTo(' + i + ')">' +
+        '<div class="nav-icon">' + s.icon + '</div>' +
+        '<div class="nav-info"><div class="nav-label">' + escapeHtml(s.title) + '</div>' +
+        '<div class="nav-sub">⏱ ' + s.duration + '</div></div></div>';
+    }
+  });
+  nav.innerHTML = html;
+}
+
+function renderSections() {
+  const main = document.getElementById('mainContent');
+  main.innerHTML = courseData.sections.map((s, i) => {
+    const isFirstOfPart = parts.some(p => p.start === i) && i !== 0;
+    const divider = (isFirstOfPart)
+      ? '<div class="part-divider">📌 ' + escapeHtml(parts.filter(p => p.start === i)[0].name) + ' —— 本篇独立成章，与其他篇互不交叉。</div>'
+      : '';
+    const navBtns = '<div class="section-nav-buttons">' +
+      '<div>' + (i > 0 ? '<button class="btn btn-outline" onclick="navigateTo(' + (i - 1) + ')">← 上一章</button>' : '') + '</div>' +
+      '<div>' + (i < courseData.sections.length - 1
+        ? '<button class="btn" onclick="markComplete(' + i + ');navigateTo(' + (i + 1) + ')">下一章 →</button>'
+        : '<button class="btn btn-success" id="completeCourseBtn" onclick="tryCompleteCourse(' + i + ')">✓ 完成课程</button>') +
+      '</div></div>';
+    return '<div class="section" data-section="' + i + '">' + divider + s.content +
+      quizBlockFor(i, s) + navBtns + '</div>';
+  }).join('');
+}
+
+// 练习区块：type === 'quiz' 的章节渲染选择题
+function quizBlockFor(i, s) {
+  if (s.type !== 'quiz') return '';
+  const qs = chapterQuizzes[i];
+  if (!qs || qs.length === 0) return '';
+  const submitted = quizSubmitted[i];
+  let h = '<div class="card" style="border-top:4px solid var(--primary);" id="quizwrap-' + i + '">' +
+    '<h2 style="margin-bottom:8px;">📝 本篇练习（共 ' + qs.length + ' 题 · 由易到难）</h2>' +
+    '<p class="quiz-note">每题选一个答案，全部选完后点「提交」。提交后逐题展示对错、参考答案与简要解析；答完可点「重做本篇练习」再来一遍。</p>';
+  h += qs.map((q, qi) => {
+    const lv = q.level === '易' ? 'lv-easy' : (q.level === '中' ? 'lv-mid' : 'lv-hard');
+    return '<div class="quiz-card" id="quiz-' + i + '-' + qi + '">' +
+      '<div class="quiz-question"><span class="diff-tag ' + lv + '">' + escapeHtml(q.level) + '</span>第 ' + (qi + 1) + ' 题：' + escapeHtml(q.q) + '</div>' +
+      '<div class="quiz-options">' + q.opts.map((opt, oi) =>
+        '<div class="quiz-option" data-option="' + oi + '" onclick="selectQuizOption(' + i + ',' + qi + ',' + oi + ')">' +
+        '<span class="quiz-option-label">' + String.fromCharCode(65 + oi) + '</span><span>' + escapeHtml(opt) + '</span></div>').join('') +
+      '</div>' +
+      '<div class="quiz-explain" id="quizExplain-' + i + '-' + qi + '"></div>' +
+      '</div>';
+  }).join('');
+  h += '<div class="quiz-submit-area">' +
+    '<button class="btn" id="quizSubmit-' + i + '" onclick="submitQuiz(' + i + ')">📤 提交</button>' +
+    '<button class="btn btn-outline" id="quizRedo-' + i + '" style="display:none" onclick="redoQuiz(' + i + ')">🔄 重做本篇练习</button>' +
+    '</div>' +
+    '<div class="quiz-score-banner" id="quizBanner-' + i + '"></div>' +
+    '</div>';
+  h += renderChecklist(i);
+  return h;
+}
+
+// ---------------- 自测清单 ----------------
+function renderChecklist(i) {
+  const items = (APP.selfChecks || {})[i];
+  if (!items || !items.length) return '';
+  const st = checkState[i] || [];
+  return '<div class="card"><h3 class="card-title">✅ 自测清单</h3>' +
+    '<div class="check-list">' + items.map((it, qi) =>
+      '<label class="check-item' + (st[qi] ? ' checked' : '') + '">' +
+      '<input type="checkbox" id="chk-' + i + '-' + qi + '"' + (st[qi] ? ' checked' : '') +
+      ' onchange="toggleCheck(' + i + ',' + qi + ')"><span>' + escapeHtml(it) + '</span></label>').join('') +
+    '</div></div>';
+}
+
+function toggleCheck(chIdx, qi) {
+  if (!checkState[chIdx]) checkState[chIdx] = [];
+  checkState[chIdx][qi] = !checkState[chIdx][qi];
+  const label = document.querySelector('#chk-' + chIdx + '-' + qi).closest('.check-item');
+  if (label) label.classList.toggle('checked', !!checkState[chIdx][qi]);
+  saveProgress();
+}
+
+// ============================================================
+// 篇末练习引擎：提交后逐题展示答案 + 解析，可重做
+// ============================================================
+function selectQuizOption(chIdx, qi, oi) {
+  if (quizSubmitted[chIdx]) return;
+  if (!quizAnswers[chIdx]) quizAnswers[chIdx] = {};
+  quizAnswers[chIdx][qi] = oi;
+  const card = document.getElementById('quiz-' + chIdx + '-' + qi);
+  if (card) {
+    card.querySelectorAll('.quiz-option').forEach(b =>
+      b.classList.toggle('selected', parseInt(b.dataset.option, 10) === oi));
+    card.classList.add('answered');
+  }
+  saveProgress();
+}
+
+function quizAnsweredCount(chIdx) {
+  const qs = chapterQuizzes[chIdx] || [];
+  const ans = quizAnswers[chIdx] || {};
+  return qs.filter((q, qi) => ans[qi] !== undefined).length;
+}
+
+function submitQuiz(chIdx) {
+  const qs = chapterQuizzes[chIdx] || [];
+  const ans = quizAnswers[chIdx] || {};
+  const missing = qs.length - quizAnsweredCount(chIdx);
+  if (missing > 0) { showToast('还有 ' + missing + ' 题没选，选完再提交', 'warning'); return; }
+  quizSubmitted[chIdx] = true;
+  applyQuizResult(chIdx);
+  saveProgress();
+}
+
+// 按当前状态渲染整份练习的"已提交"视图（提交 / 刷新恢复共用）
+function applyQuizResult(chIdx) {
+  const qs = chapterQuizzes[chIdx] || [];
+  const ans = quizAnswers[chIdx] || {};
+  let correct = 0;
+  qs.forEach((q, qi) => {
+    const sel = ans[qi];
+    const isCorrect = sel === q.correct;
+    if (isCorrect) correct++;
+    const card = document.getElementById('quiz-' + chIdx + '-' + qi);
+    if (!card) return;
+    card.classList.add('answered');
+    card.querySelectorAll('.quiz-option').forEach(b => {
+      const oi = parseInt(b.dataset.option, 10);
+      b.classList.remove('selected');
+      b.style.pointerEvents = 'none';
+      if (oi === q.correct) b.classList.add('correct');
+      else if (oi === sel) b.classList.add('wrong');
+      else b.classList.add('disabled');
+    });
+    const ex = document.getElementById('quizExplain-' + chIdx + '-' + qi);
+    if (ex) {
+      const ansLetter = String.fromCharCode(65 + q.correct);
+      ex.innerHTML = isCorrect
+        ? '<div class="qe-h">✅ 回答正确</div>' + escapeHtml(q.explain)
+        : '<div class="qe-h">❌ 正确答案：' + ansLetter + '</div>' + escapeHtml(q.explain);
+      ex.classList.add('show');
+    }
+  });
+  const total = qs.length;
+  const banner = document.getElementById('quizBanner-' + chIdx);
+  if (banner) {
+    const cls = correct >= Math.ceil(total * 0.8) ? 'good' : (correct >= Math.ceil(total * 0.5) ? 'mid' : 'bad');
+    banner.className = 'quiz-score-banner show ' + cls;
+    banner.innerHTML = '本篇共 ' + total + ' 题，答对 <span style="font-size:22px">' + correct + '</span> / ' + total +
+      ' 题。每题解析已展示，错题建议回看对应知识点，也可以随时重做。';
+  }
+  const submitBtn = document.getElementById('quizSubmit-' + chIdx);
+  if (submitBtn) submitBtn.style.display = 'none';
+  const redoBtn = document.getElementById('quizRedo-' + chIdx);
+  if (redoBtn) redoBtn.style.display = '';
+}
+
+function redoQuiz(chIdx) {
+  delete quizAnswers[chIdx];
+  delete quizSubmitted[chIdx];
+  const qs = chapterQuizzes[chIdx] || [];
+  qs.forEach((q, qi) => {
+    const card = document.getElementById('quiz-' + chIdx + '-' + qi);
+    if (!card) return;
+    card.classList.remove('answered');
+    card.querySelectorAll('.quiz-option').forEach(b => {
+      b.classList.remove('correct', 'wrong', 'disabled', 'selected');
+      b.style.pointerEvents = '';
+    });
+    const ex = document.getElementById('quizExplain-' + chIdx + '-' + qi);
+    if (ex) { ex.classList.remove('show'); ex.innerHTML = ''; }
+  });
+  const banner = document.getElementById('quizBanner-' + chIdx);
+  if (banner) { banner.className = 'quiz-score-banner'; banner.innerHTML = ''; }
+  const submitBtn = document.getElementById('quizSubmit-' + chIdx);
+  if (submitBtn) submitBtn.style.display = '';
+  const redoBtn = document.getElementById('quizRedo-' + chIdx);
+  if (redoBtn) redoBtn.style.display = 'none';
+  showToast('已重置，重新开始本篇练习', 'success');
+  saveProgress();
+}
+
+// 刷新恢复：已提交的练习恢复完整结果视图，未提交的恢复已选答案
+function restoreQuizUI() {
+  Object.keys(quizSubmitted).forEach(chIdxStr => {
+    const chIdx = parseInt(chIdxStr, 10);
+    if (quizSubmitted[chIdx]) applyQuizResult(chIdx);
+  });
+  Object.keys(quizAnswers).forEach(chIdxStr => {
+    const chIdx = parseInt(chIdxStr, 10);
+    if (quizSubmitted[chIdx]) return;
+    const ans = quizAnswers[chIdx] || {};
+    Object.keys(ans).forEach(qiStr => {
+      const qi = parseInt(qiStr, 10);
+      const oi = ans[qi];
+      const card = document.getElementById('quiz-' + chIdx + '-' + qi);
+      if (!card) return;
+      card.classList.add('answered');
+      card.querySelectorAll('.quiz-option').forEach(b =>
+        b.classList.toggle('selected', parseInt(b.dataset.option, 10) === oi));
+    });
+  });
+  // 自测清单
+  Object.keys(checkState).forEach(chIdxStr => {
+    const chIdx = parseInt(chIdxStr, 10);
+    (checkState[chIdx] || []).forEach((v, qi) => {
+      const cb = document.getElementById('chk-' + chIdx + '-' + qi);
+      if (cb) { cb.checked = !!v; const label = cb.closest('.check-item'); if (label) label.classList.toggle('checked', !!v); }
+    });
+  });
+}
+
+// ============================================================
+// 导航（自由浏览，无串行锁定）
+// ============================================================
+function navigateTo(index) {
+  currentSection = index;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-section').forEach(n => n.classList.remove('active'));
+  const section = document.querySelector('.section[data-section="' + index + '"]');
+  if (section) section.classList.add('active');
+  const navItem = document.querySelector('.nav-section[data-index="' + index + '"]');
+  if (navItem) navItem.classList.add('active');
+  updateProgress(); updateNotesForSection(index); renderChapterPlan(index); saveProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+  const mhTitle = document.getElementById('mhTitle');
+  if (mhTitle) mhTitle.textContent = courseData.sections[index].title;
+}
+
+function markComplete(index) {
+  completedSections.add(index);
+  updateProgress(); saveProgress();
+}
+
+function tryCompleteCourse(index) {
+  const unanswered = [];
+  chapterQuizzes.forEach((qs, i) => {
+    if (qs && qs.length && !quizSubmitted[i]) unanswered.push(i);
+  });
+  if (unanswered.length) {
+    showToast('还有 ' + unanswered.length + ' 篇练习没提交（第 ' + unanswered.map(i => i + 1).join('、') + ' 章），提交后再完成课程', 'warning');
+    return;
+  }
+  markComplete(index);
+  showToast('🎉 已完成全部学习内容！错题和解析可以随时回来回看', 'success');
+}
+
+function updateProgress() {
+  const total = courseData.sections.length;
+  const viewed = new Set([...completedSections, currentSection]);
+  const pct = Math.round((viewed.size / total) * 100);
+  document.getElementById('progressPercent').textContent = pct + '%';
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.querySelectorAll('.nav-section').forEach((el, i) => {
+    if (completedSections.has(i)) el.classList.add('completed');
+  });
+}
+
+// ============================================================
+// 计时器 / 笔记
+// ============================================================
+function startTimer() {
+  const saved = localStorage.getItem(LS_PREFIX + '_study_seconds');
+  if (saved) studySeconds = parseInt(saved, 10);
+  updateTimerDisplay();
+  setInterval(() => {
+    studySeconds++;
+    updateTimerDisplay();
+    if (studySeconds % 10 === 0) localStorage.setItem(LS_PREFIX + '_study_seconds', studySeconds);
+  }, 1000);
+}
+function updateTimerDisplay() {
+  const mins = Math.floor(studySeconds / 60), secs = studySeconds % 60;
+  const ts = String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
+  const el = document.getElementById('timerDisplay'); if (el) el.textContent = ts;
+  const mt = document.getElementById('mhTimer'); if (mt) mt.textContent = '⏱ ' + ts;
+}
+
+function toggleNotes() { document.getElementById('notesPanel').classList.toggle('open'); }
+function updateNotesForSection(index) {
+  document.getElementById('notesChapterLabel').textContent = courseData.sections[index].title;
+  const saved = JSON.parse(localStorage.getItem(LS_PREFIX + '_notes') || '{}');
+  document.getElementById('notesTextarea').value = saved[index] || '';
+}
+function loadNotes() {
+  const saved = JSON.parse(localStorage.getItem(LS_PREFIX + '_notes') || '{}');
+  const ta = document.getElementById('notesTextarea');
+  if (!ta) return;
+  ta.value = saved[currentSection] || '';
+  ta.addEventListener('input', function () {
+    const all = JSON.parse(localStorage.getItem(LS_PREFIX + '_notes') || '{}');
+    all[currentSection] = this.value;
+    localStorage.setItem(LS_PREFIX + '_notes', JSON.stringify(all));
+  });
+}
+
+// ============================================================
+// 进度持久化
+// ============================================================
+function saveProgress() {
+  const state = {
+    completedSections: [...completedSections],
+    quizAnswers: quizAnswers,
+    quizSubmitted: quizSubmitted,
+    checkState: checkState,
+    chapterTimeSpent: chapterTimeSpent,
+    planWarned: planWarned,
+    currentSection: currentSection
+  };
+  try { localStorage.setItem(LS_PREFIX + '_progress', JSON.stringify(state)); } catch (e) {}
+}
+
+function loadProgress() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(LS_PREFIX + '_progress'));
+    if (saved) {
+      completedSections = new Set(saved.completedSections || []);
+      quizAnswers = saved.quizAnswers || {};
+      quizSubmitted = saved.quizSubmitted || {};
+      checkState = saved.checkState || {};
+      chapterTimeSpent = saved.chapterTimeSpent || {};
+      planWarned = saved.planWarned || {};
+      currentSection = saved.currentSection || 0;
+      if (currentSection < 0 || currentSection >= courseData.sections.length) currentSection = 0;
+      updateProgress();
+      restoreQuizUI();
+      courseData.sections.forEach((s, i) => renderChapterPlan(i));
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      const section = document.querySelector('.section[data-section="' + currentSection + '"]');
+      if (section) section.classList.add('active');
+      const navItem = document.querySelector('.nav-section[data-index="' + currentSection + '"]');
+      if (navItem) navItem.classList.add('active');
+      const mhTitle = document.getElementById('mhTitle');
+      if (mhTitle) mhTitle.textContent = courseData.sections[currentSection].title;
+    } else {
+      navigateTo(0);
+    }
+  } catch (e) {
+    navigateTo(0);
+  }
+}
+
+// ============================================================
+// Toast / 侧边栏
+// ============================================================
+function showToast(msg, type) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const toast = document.createElement('div');
+  toast.className = 'toast ' + type;
+  toast.textContent = msg;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('show');
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
+</script>
+</body>
+</html>

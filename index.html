@@ -299,7 +299,7 @@ table tbody tr:nth-child(even) td{background:#F8FAFC}
 <div class="study-timer"><span class="timer-icon">⏱</span><div><div class="timer-display" id="timerDisplay">00:00</div><div class="timer-label">学习时长</div></div></div>
 <div class="sidebar-progress"><div class="progress-label"><span>学习进度</span><span id="progressPercent">0%</span></div><div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div></div>
 <div class="sidebar-nav" id="sidebarNav"></div>
-<div class="sidebar-footer">豌豆思维 · 国内 LP 培训</div>
+<div class="sidebar-footer">豌豆思维 · 国内 LP 培训 · <span id="verTag" style="color:#94a3b8">v1.0.2</span></div>
 </div>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 <div class="mobile-header" id="mobileHeader"><button style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer" onclick="toggleSidebar()">☰</button><span style="font-weight:700;font-size:15px" id="mhTitle">S1-S9 学段知识复习</span><span style="font-size:13px;color:#94a3b8" id="mhTimer">⏱ 00:00</span></div>
@@ -322,6 +322,20 @@ table tbody tr:nth-child(even) td{background:#F8FAFC}
 // 数据从 #appDataJson 读取（JSON），避免转义问题
 // 定位：复习资料 · 无视频 · 无 AI · 练习提交后展示答案+解析
 // ============================================================
+// 脚本异常可见化：任何运行时错误直接弹 toast，便于用户端定位（截图回报）
+window.onerror = function (msg, src, line) {
+  try {
+    var t = document.createElement('div');
+    t.className = 'toast error';
+    t.style.whiteSpace = 'normal';
+    t.style.maxWidth = '86vw';
+    t.textContent = '⚠️ 脚本异常：' + msg + '（' + (line || '?') + '）';
+    document.body.appendChild(t);
+    setTimeout(function () { t.remove(); }, 6000);
+  } catch (e) {}
+  return false;
+};
+
 const APP = JSON.parse(document.getElementById('appDataJson').textContent);
 const courseData = { title: APP.title, sections: APP.sections };
 const parts = APP.parts || [];
@@ -420,6 +434,25 @@ function init() {
   startTimer();
   startPlanTracking();
   loadNotes();
+  bootSelfCheck();
+}
+
+// 启动自检：练习题未渲染成功时给出可见提示（不静默失败）
+function bootSelfCheck() {
+  const quizCards = document.querySelectorAll('.quiz-card').length;
+  if (quizCards >= 30) {
+    const tag = document.getElementById('verTag');
+    if (tag) tag.textContent = 'v1.0.2 ✓';
+    return;
+  }
+  let banner = document.getElementById('bootFailBanner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'bootFailBanner';
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#DC2626;color:#fff;padding:12px 16px;font-size:14px;line-height:1.7';
+    banner.innerHTML = '⚠️ 页面加载异常（练习题未渲染，发现 ' + quizCards + ' 张答题卡）。请强刷页面（Ctrl+F5）或清除缓存后重试；仍异常请截图此提示反馈。';
+    document.body.appendChild(banner);
+  }
 }
 
 function renderSidebar() {

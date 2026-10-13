@@ -237,6 +237,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto
 .quiz-explain.show{display:block}
 .quiz-explain .qe-h{font-weight:800;color:var(--primary-dark);margin-bottom:4px}
 .quiz-card.answered{border-color:#C7D2FE}
+/* 选中态：点击选项必须立即可见（缺此样式 = 用户感知"点了没反应"） */
+.quiz-option.selected{border-color:var(--primary)!important;background:#EEF2FF!important}
+.quiz-option.selected .quiz-option-label{background:var(--primary);color:#fff}
 .quiz-note{margin:0 0 14px 0;font-size:13px;color:var(--text-secondary);background:#EEF2FF;border-left:3px solid var(--primary);padding:8px 12px;border-radius:4px;line-height:1.8}
 
 /* ---------------- 自测清单 ---------------- */
@@ -476,6 +479,7 @@ function quizBlockFor(i, s) {
       '</div>';
   }).join('');
   h += '<div class="quiz-submit-area">' +
+    '<span id="quizCount-' + i + '" style="align-self:center;font-size:14px;font-weight:700;color:var(--primary-dark);background:#EEF2FF;border-radius:999px;padding:8px 16px">已选 0 / ' + qs.length + ' 题</span>' +
     '<button class="btn" id="quizSubmit-' + i + '" onclick="submitQuiz(' + i + ')">📤 提交</button>' +
     '<button class="btn btn-outline" id="quizRedo-' + i + '" style="display:none" onclick="redoQuiz(' + i + ')">🔄 重做本篇练习</button>' +
     '</div>' +
@@ -519,6 +523,7 @@ function selectQuizOption(chIdx, qi, oi) {
       b.classList.toggle('selected', parseInt(b.dataset.option, 10) === oi));
     card.classList.add('answered');
   }
+  updateQuizCount(chIdx);
   saveProgress();
 }
 
@@ -526,6 +531,15 @@ function quizAnsweredCount(chIdx) {
   const qs = chapterQuizzes[chIdx] || [];
   const ans = quizAnswers[chIdx] || {};
   return qs.filter((q, qi) => ans[qi] !== undefined).length;
+}
+
+// 已选进度计数器：每次选择 / 重做 / 恢复后刷新，给用户即时反馈
+function updateQuizCount(chIdx) {
+  const el = document.getElementById('quizCount-' + chIdx);
+  if (!el) return;
+  const total = (chapterQuizzes[chIdx] || []).length;
+  if (quizSubmitted[chIdx]) { el.textContent = '已提交 · 答对见下方横幅'; return; }
+  el.textContent = '已选 ' + quizAnsweredCount(chIdx) + ' / ' + total + ' 题';
 }
 
 function submitQuiz(chIdx) {
@@ -579,6 +593,7 @@ function applyQuizResult(chIdx) {
   if (submitBtn) submitBtn.style.display = 'none';
   const redoBtn = document.getElementById('quizRedo-' + chIdx);
   if (redoBtn) redoBtn.style.display = '';
+  updateQuizCount(chIdx);
 }
 
 function redoQuiz(chIdx) {
@@ -602,6 +617,7 @@ function redoQuiz(chIdx) {
   if (submitBtn) submitBtn.style.display = '';
   const redoBtn = document.getElementById('quizRedo-' + chIdx);
   if (redoBtn) redoBtn.style.display = 'none';
+  updateQuizCount(chIdx);
   showToast('已重置，重新开始本篇练习', 'success');
   saveProgress();
 }
@@ -634,6 +650,8 @@ function restoreQuizUI() {
       if (cb) { cb.checked = !!v; const label = cb.closest('.check-item'); if (label) label.classList.toggle('checked', !!v); }
     });
   });
+  // 已选进度计数器
+  Object.keys(quizAnswers).forEach(chIdxStr => updateQuizCount(parseInt(chIdxStr, 10)));
 }
 
 // ============================================================
